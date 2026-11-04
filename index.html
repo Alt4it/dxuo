@@ -208,7 +208,7 @@
   .sheet.ok .sheet-in{background:var(--ok-bg);border-color:var(--ok)}
   .sheet.bad .sheet-in{background:var(--bad-bg);border-color:var(--bad)}
   .sheet .fh{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:21px}
-  .sheet .fh .mascot{width:46px;height:46px}
+  .sheet .fh .mascot{width:60px;height:60px;flex:none}
   .sheet.ok .fh{color:var(--ok)} .sheet.bad .fh{color:var(--bad)}
   .sheet .ans{margin-top:6px;font-size:14px;color:var(--ink);line-height:1.7;max-width:36em}
   .sheet .ans b{font-family:var(--display);font-weight:700;font-size:17px}
@@ -219,7 +219,7 @@
   /* ===== result ===== */
   .result{padding:24px 20px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px}
   .result .mascot{width:118px;height:118px;margin-bottom:8px;animation:jump .9s cubic-bezier(.3,1.6,.5,1) both}
-  .result .mascot.sad{animation:none}
+  .result .mascot.mood-sad{animation:none}
   @keyframes jump{0%{transform:translateY(30px) scale(.6);opacity:0}60%{transform:translateY(-10px) scale(1.04);opacity:1}100%{transform:none}}
   .result h2{font-family:var(--display);font-weight:700;font-size:28px;letter-spacing:.03em;color:var(--gold)}
   .result h2.sad{color:var(--ink-soft)}
@@ -428,6 +428,53 @@
   .tm-pin input{font-size:22px;letter-spacing:.4em;text-align:center;padding:8px;border:1.5px solid var(--line-strong);border-radius:var(--r-m);background:var(--panel-2);color:var(--ink)}
   .tm-err{font-size:12px;font-weight:800;color:var(--bad);min-height:1em}
 
+  /* モンテくんの身振り（喜ぶ・がっかり・万歳） */
+  .mascot svg{overflow:visible}
+  .mascot .mb,.mascot .ma,.mascot .me,.mascot .mu{transform-box:fill-box}
+  .mascot .mb{transform-origin:50% 100%}
+  .mascot .ml{transform-origin:100% 20%}
+  .mascot .mr{transform-origin:0% 20%}
+  .mascot .mul{transform-origin:92% 85%}
+  .mascot .mur{transform-origin:8% 85%}
+  .mascot .me{transform-origin:15% 5%}
+  .mascot .msp{opacity:0}
+  .mascot .mu{display:none}
+  .mood-happy .mu,.mood-cheer .mu{display:inline}
+  .mood-happy .ma,.mood-cheer .ma{display:none}
+  /* 正解：2回ぴょんぴょん跳ねて、両手をばっと上げてふる */
+  .mood-happy .mb{animation:m-hop .9s cubic-bezier(.3,.7,.4,1) both}
+  .mood-happy .mul{animation:m-upL .9s ease-out both}
+  .mood-happy .mur{animation:m-upR .9s ease-out both}
+  .mood-happy .msp{animation:m-twinkle .9s ease-out both}
+  @keyframes m-hop{0%{transform:none}15%{transform:translateY(0) scale(1.06,.9)}32%{transform:translateY(-16%) scale(.96,1.05)}48%{transform:translateY(0) scale(1.05,.93)}64%{transform:translateY(-10%)}80%,100%{transform:none}}
+  @keyframes m-upL{0%{transform:rotate(-70deg)}25%{transform:rotate(12deg)}45%{transform:rotate(-12deg)}65%{transform:rotate(10deg)}85%,100%{transform:none}}
+  @keyframes m-upR{0%{transform:rotate(70deg)}25%{transform:rotate(-12deg)}45%{transform:rotate(12deg)}65%{transform:rotate(-10deg)}85%,100%{transform:none}}
+  @keyframes m-twinkle{0%{opacity:0;transform:scale(.4)}40%{opacity:1;transform:scale(1.1)}100%{opacity:.9;transform:none}}
+  /* まちがい：首を横にふって、しょんぼり縮む・手と耳がたれる */
+  .mood-sad .mb{animation:m-slump 1s ease-in-out both}
+  .mood-sad .ml{animation:m-dropL 1s ease-in-out both}
+  .mood-sad .mr{animation:m-dropR 1s ease-in-out both}
+  .mood-sad .me{animation:m-ear 1s ease-in-out both}
+  @keyframes m-slump{0%{transform:none}12%{transform:rotate(-6deg)}26%{transform:rotate(6deg)}40%{transform:rotate(-4deg)}54%{transform:rotate(0)}100%{transform:translateY(5%) scale(1.03,.93)}}
+  @keyframes m-dropL{0%,50%{transform:none}100%{transform:rotate(-38deg)}}
+  @keyframes m-dropR{0%,50%{transform:none}100%{transform:rotate(38deg)}}
+  @keyframes m-ear{0%,50%{transform:none}100%{transform:rotate(14deg)}}
+  /* レッスン終了：万歳でぴょんぴょん、手を交互にふる */
+  .mood-cheer .mb{animation:m-bounce .7s cubic-bezier(.3,.7,.4,1) .5s infinite}
+  .mood-cheer .mul{animation:m-waveL .35s ease-in-out .5s infinite alternate}
+  .mood-cheer .mur{animation:m-waveR .35s ease-in-out .5s infinite alternate}
+  .mood-cheer .msp{animation:m-sparkle 1.4s ease-in-out .5s infinite}
+  @keyframes m-bounce{0%,100%{transform:none}20%{transform:scale(1.05,.92)}50%{transform:translateY(-12%) scale(.97,1.04)}80%{transform:scale(1.03,.96)}}
+  @keyframes m-waveL{from{transform:rotate(-16deg)}to{transform:rotate(14deg)}}
+  @keyframes m-waveR{from{transform:rotate(-14deg)}to{transform:rotate(16deg)}}
+  @keyframes m-sparkle{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+  .mascot .msp{transform-box:fill-box;transform-origin:center}
+  /* モンテくんのひとこと */
+  .sheet .fh .fh-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .sheet .fh .say{font-family:var(--sans);font-size:13.5px;font-weight:800;line-height:1.45;opacity:.92}
+  .rsay{position:relative;display:inline-block;max-width:300px;margin:4px auto 12px;padding:9px 16px;border:1.5px solid var(--line-strong);border-radius:16px;background:var(--panel);font-size:14.5px;font-weight:800;line-height:1.5;color:var(--ink);animation:jump .6s .35s cubic-bezier(.3,1.6,.5,1) both}
+  .rsay::before{content:"";position:absolute;left:50%;top:-8px;width:13px;height:13px;margin-left:-7px;background:var(--panel);border-left:1.5px solid var(--line-strong);border-top:1.5px solid var(--line-strong);transform:rotate(45deg)}
+
   /* ばらの飾り */
   .flourish{display:block;width:240px;max-width:100%;height:26px;margin:0 0 10px;color:var(--gold)}
   .rosedot{display:block;width:120px;height:20px;margin:30px auto 0;color:var(--gold)}
@@ -468,7 +515,7 @@
       <path d="M120 13m-1.6 0a1.6 1.6 0 1 1 3.2 0a3.6 3.6 0 1 1-7.2 0a5.6 5.6 0 1 1 11.2 0a7.6 7.6 0 1 1-15.2 0" fill="none" stroke="#6d1426" stroke-width="1.3"/>
       <circle cx="116.5" cy="9" r="2.2" fill="#fff" fill-opacity=".25"/>
     </svg>
-    <div class="hero"><div class="mascot" id="heroMascot"></div><div class="bubble" id="heroMsg">毎日の積み重ねで、用語を「見て・選んで」定着させよう。</div></div>
+    <div class="hero"><div class="mascot" id="heroMascot"></div><div class="bubble" id="heroMsg">ぼくはモンテくん！毎日いっしょに用語を覚えよう。</div></div>
     <div class="install hidden" id="installCard"></div>
     <div class="goal" id="goalCard"></div>
     <div class="ctabs" id="ctabs"></div>
@@ -640,7 +687,9 @@ function sfx(kind){
   }catch(e){}
 }
 
-/* ====== マスコット（白い体に赤い鼻・たれ耳のキャラ。SVGで描き直し）: mood = normal / happy / sad ====== */
+/* ====== マスコット「モンテくん」（白い体に赤い鼻・たれ耳）: mood = normal / happy / sad ======
+   体（.mb）・左右の手（.ml / .mr）・耳（.me）・きらきら（.msp）を分けてあり、
+   入れ物に mood-happy / mood-sad / mood-cheer をつけると身振りが動く（CSS） */
 function mascot(mood){
   const O='#d4502a', W='#fffdf7', R='#c8341f';   // 線・体・鼻の色
   const line='stroke="'+O+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"';
@@ -653,16 +702,17 @@ function mascot(mood){
   const tear = mood==='sad' ? '<path d="M48 30q-2.6 4.2 0 5.6q2.6-1.4 0-5.6z" fill="#7fb7e6"/>' : '';
   return '<svg viewBox="0 0 100 100" aria-hidden="true">'+
     '<ellipse cx="53" cy="95" rx="26" ry="3.5" fill="rgba(0,0,0,.13)"/>'+
+    // きらきら（万歳のときだけ見える）
+    '<g class="msp" fill="#e6bb52"><path d="M8 6l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M93 2l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z"/></g>'+
+    '<g class="mb">'+
     // たれ耳（頭のうしろから下へ）
-    '<path d="M70 15C82 15 89 24 90 38C91 52 90 62 87 68C84 71 81 68 81 62C81 50 79 38 74 30Z" fill="'+W+'" '+line+'/>'+
+    '<path class="me" d="M70 15C82 15 89 24 90 38C91 52 90 62 87 68C84 71 81 68 81 62C81 50 79 38 74 30Z" fill="'+W+'" '+line+'/>'+
     // 足
     '<ellipse cx="43" cy="89.5" rx="8" ry="4.6" fill="'+W+'" '+line+'/><ellipse cx="63" cy="89.5" rx="8" ry="4.6" fill="'+W+'" '+line+'/>'+
     // 頭と体（ひとつながり）
     '<path d="M30 24C32 12 48 5 62 7C74 9 80 18 79 28C78 35 75 40 74 46C80 56 82 72 76 81C70 89 38 89 32 81C26 72 28 56 34 46C30 40 28 32 30 24Z" fill="'+W+'" '+line+'/>'+
     // 頭のてっぺんの小さな角
     '<path d="M37 14q-2-6 2-8q2 3 3 6" fill="'+W+'" '+line+'/>'+
-    // 手
-    '<path d="M31 60q-8 2-8 8q2 4 8 1" fill="'+W+'" '+line+'/><path d="M77 60q7 3 6 9q-3 3-7 0" fill="'+W+'" '+line+'/>'+
     // ほっぺと「m」
     '<ellipse cx="63.5" cy="33.5" rx="6.5" ry="4" fill="#f6b3a4" opacity=".7"/>'+
     '<path d="M61 34.6v-1.8q1.1-1.4 1.8 0v1.8v-1.8q1.1-1.4 1.8 0v1.8" fill="none" stroke="'+R+'" stroke-width=".9" stroke-linecap="round"/>'+
@@ -671,8 +721,34 @@ function mascot(mood){
     '<circle cx="22" cy="33" r="14" fill="'+R+'"/>'+
     '<ellipse cx="17" cy="27" rx="5.5" ry="3.8" fill="#fff" opacity=".55" transform="rotate(-25 17 27)"/>'+
     '<circle cx="26" cy="25" r="1.6" fill="#fff" opacity=".5"/>'+
-    '</svg>';
+    // 手（身振りで鼻や耳の前に出るので最後に描く）
+    '<path class="ma ml" d="M31 60q-8 2-8 8q2 4 8 1" fill="'+W+'" '+line+'/><path class="ma mr" d="M77 60q7 3 6 9q-3 3-7 0" fill="'+W+'" '+line+'/>'+
+    // 万歳の腕（喜ぶときだけ出す）
+    upArm('mu mul','M34 57Q22 55 11 46',O,W)+upArm('mu mur','M74 55Q86 51 95 39',O,W)+
+    '</g></svg>';
 }
+function upArm(cls,d,O,W){
+  return '<g class="'+cls+'"><path d="'+d+'" fill="none" stroke="'+O+'" stroke-width="9.6" stroke-linecap="round"/>'+
+    '<path d="'+d+'" fill="none" stroke="'+W+'" stroke-width="4.8" stroke-linecap="round"/></g>';
+}
+// 身振りつきのモンテくん。mood: happy（喜ぶ）/ sad（がっかり）/ cheer（万歳）/ normal
+function monte(mood){
+  const face = mood==='cheer' ? 'happy' : mood;
+  return '<div class="mascot mood-'+mood+'">'+mascot(face)+'</div>';
+}
+// モンテくんのセリフ
+const MONTE={
+  ok:['すごい！その調子！','さすが！よく覚えてるね','かんぺき！ぼくもうれしい！','いいね、どんどんいこう！','やったね！頭がさえてるね'],
+  run:n=>n+'問連続正解！もう止まらないね！',
+  bad:['おしい！次はきっと覚えられるよ','だいじょうぶ！まちがえた問題ほど頭に残るんだ','くやしいね…でも今ので覚えたはず！','ドンマイ！あとでもう一回出すから、いっしょに覚えよう'],
+  last:'ハートがあと1つ…でも落ち着けば大丈夫！',
+  matchOk:'ぜんぶつなげたね！すごい！',
+  matchMiss:'ペア完成！まちがえたところも、これで覚えたね',
+  perfect:['ノーミス！モンテくん感動しちゃった！','かんぺきだよ！きみは天才かも！'],
+  crown:['よくがんばったね！王冠ゲットおめでとう！','最後までやりきったね！えらい！'],
+  clear:['おつかれさま！ちゃんと前に進んでるよ','よくがんばったね！次は王冠をねらおう'],
+  fail:['今日はここまで。でも、まちがえた用語はしっかり覚えられたよ','くやしいね…少し休んで、もう一回いっしょにがんばろう！'],
+};
 
 /* ====== 用語の索引（復習用: 用語 → キー・同じ単元の用語） ====== */
 const TERMINFO=new Map(), KEYTERM={};
@@ -715,7 +791,7 @@ function renderStatus(){
   $('#sGoal').textContent=g+'/'+P.goal;
   $('#heroMsg').innerHTML = reached ? '🎯 今日の目標を達成！この調子で<b>クエスト</b>もやってみよう。'
     : ds>0 ? '🔥 <b>'+ds+'日</b>連続で学習中！今日も1レッスンやってみよう。'
-    : '毎日の積み重ねで、用語を「見て・選んで」定着させよう。';
+    : 'ぼくはモンテくん！毎日いっしょに用語を覚えよう。';
   $('#goalCard').innerHTML='<span class="gi">🎯</span><div class="gb"><div class="gt">今日の目標 <b>'+g+' / '+P.goal+' XP</b></div>'+
     '<div class="gbar"><i style="width:'+(g/P.goal*100)+'%"></i></div></div>'+(reached?'<span class="gok">達成！</span>':'');
   const mc=missList().length; $('#navBadge').textContent=mc; $('#navBadge').classList.toggle('hidden',!mc);
@@ -1186,14 +1262,18 @@ function pick(btn,opt,q){
   }
 }
 function feedback(ok,q){
+  const say = ok ? (LS.streak>=3 && (LS.streak===3 || LS.streak%5===0) ? MONTE.run(LS.streak) : pickOne(MONTE.ok))
+                 : (LS.hearts===1 ? MONTE.last : pickOne(MONTE.bad));
   showSheet(ok, ok?pickOne(['正解！','すばらしい！','その調子！','かんぺき！','よくできました！']):'おしい！',
-    '<b>'+(q.term.w||q.term.t)+'</b>'+(q.term.y?'（'+q.term.y+'年）':'')+'<br>'+q.term.d);
+    '<b>'+(q.term.w||q.term.t)+'</b>'+(q.term.y?'（'+q.term.y+'年）':'')+'<br>'+q.term.d, say);
 }
-function showSheet(ok,head,html){
-  const sh=$('#sheet');
+// 正誤のシート。問題画面のモンテくんも同じ気持ちで身振りをする
+function showSheet(ok,head,html,say){
+  const sh=$('#sheet'), mood=ok?'happy':'sad';
   sh.className='sheet show '+(ok?'ok':'bad');
-  $('#fh').innerHTML='<span class="mascot">'+mascot(ok?'happy':'sad')+'</span>'+head;
+  $('#fh').innerHTML=monte(mood)+'<span class="fh-t">'+head+(say?'<small class="say">モンテくん「'+say+'」</small>':'')+'</span>';
   $('#fans').innerHTML=html;
+  const qm=document.querySelector('#qwrap .qrow .mascot'); if(qm) qm.outerHTML=monte(mood);
   $('#contBtn').onclick=next;
 }
 function next(){
@@ -1244,7 +1324,7 @@ function finishMatch(){
   const ok=LS.m.miss===0;
   if(ok) gotRight();
   sfx('ok');
-  showSheet(true, ok?'ペアをぜんぶつくれた！':'ペア完成！', ok?'ノーミスでそろえられたね。':'まちがえたペア：'+LS.m.miss+'回。もう一度確かめておこう。');
+  showSheet(true, ok?'ペアをぜんぶつくれた！':'ペア完成！', ok?'ノーミスでそろえられたね。':'まちがえたペア：'+LS.m.miss+'回。もう一度確かめておこう。', ok?MONTE.matchOk:MONTE.matchMiss);
 }
 
 function endLesson(cleared){
@@ -1291,8 +1371,10 @@ function endLesson(cleared){
   if(goalHit) extra+='<div class="levelup" style="background:var(--wld)">🎯 今日の目標を達成！</div>';
   got.forEach(q=>{ extra+='<div class="levelup" style="background:var(--cul)">'+q.icon+' クエスト達成：'+q.name+' +'+QUEST_XP+' XP</div>'; });
   if(keyGain) extra+='<div class="levelup keygain">🗝️ 鍵のかけら +'+keyGain+'（あと'+(KEYS_PER_BOX-(P.keys%KEYS_PER_BOX))+'個で宝箱'+(boxesReady()?'・今'+boxesReady()+'個開けられる':'')+'）</div>';
+  // レッスンのあとはモンテくんが万歳してほめる（ハートがなくなったときは、がっかりしつつはげます）
+  const say = sad ? pickOne(MONTE.fail) : perfect ? pickOne(MONTE.perfect) : (acc>=80 && !isReview && !prevCrown) ? pickOne(MONTE.crown) : pickOne(MONTE.clear);
   sc.innerHTML='<div class="result">'+
-    '<div class="mascot'+(sad?' sad':'')+'">'+mascot(sad?'sad':'happy')+'</div><h2'+(sad?' class="sad"':'')+'>'+head+'</h2>'+
+    monte(sad?'sad':'cheer')+'<div class="rsay">'+say+'</div><h2'+(sad?' class="sad"':'')+'>'+head+'</h2>'+
     '<div class="rsub">'+LS.lesson.name+'</div>'+
     '<div class="rstats">'+
       '<div class="rstat xp"><div class="rl">獲得XP</div><div class="rv" data-to="'+(P.xp-xpBefore)+'" data-pre="+">+0</div></div>'+
