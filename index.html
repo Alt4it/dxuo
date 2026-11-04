@@ -344,6 +344,90 @@
   .day.today i{outline:2px solid var(--war);outline-offset:2px}
 
   /* 動きを減らす設定の端末では、くり返しの動きを止める */
+  /* ===== 宝箱（先生ガチャ） ===== */
+  .s1{--rc:#8a847a} .s2{--rc:#2b8a5e} .s3{--rc:#2346a8} .s4{--rc:#6a3fa0} .s5{--rc:#b0263f} .s6{--rc:#d9a93a}
+  .boxcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-l);padding:16px 16px 14px;text-align:center}
+  .bc-chest{width:150px;margin:0 auto 6px}
+  .bc-chest svg{width:100%;display:block}
+  .bc-chest.ready{animation:wiggle 2.2s ease-in-out infinite}
+  .bc-keys{font-weight:900;font-size:15px;font-variant-numeric:tabular-nums}
+  .bc-keys b{font-family:var(--display);font-size:22px;color:var(--eco)}
+  .boxcard .gbar{height:10px;margin:6px 0 4px}
+  .bc-sub{font-size:12px;font-weight:700;color:var(--ink-faint);margin-bottom:12px}
+  .krow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line-soft);font-size:14px;font-weight:700}
+  .krow:first-of-type{border-top:none}
+  .krow>span{font-size:20px;width:26px;text-align:center}
+  .krow>div{flex:1}
+  .krow>b{color:var(--eco);font-variant-numeric:tabular-nums}
+  .tlist{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .trow{display:flex;align-items:center;gap:10px;text-align:left;background:var(--panel-2);border:1px solid var(--line);border-left:5px solid var(--rc);border-radius:var(--r-m);padding:9px 11px;cursor:pointer;color:var(--ink)}
+  .trow.used{opacity:.55}
+  .tr-ic{font-size:24px}
+  .tr-b{display:flex;flex-direction:column;min-width:0}
+  .tr-b b{font-family:var(--display);font-weight:700;font-size:15px}
+  .tr-b small{font-size:11.5px;font-weight:700;color:var(--ink-faint)}
+  .odds summary{cursor:pointer;list-style:none}
+  .odds summary::after{content:" ▾";color:var(--ink-faint);font-size:12px}
+  .odds table{width:100%;border-collapse:collapse;margin-top:6px;font-size:13px}
+  .odds td{padding:6px 2px;border-top:1px solid var(--line-soft);vertical-align:top}
+  .odds small{display:block;font-size:11px;color:var(--ink-faint)}
+  .o-s{color:var(--gold);white-space:nowrap;font-size:11px;width:64px}
+  .o-p{text-align:right;font-weight:900;font-variant-numeric:tabular-nums;width:52px}
+  .levelup.keygain{background:var(--eco)}
+
+  /* 景品のカード */
+  .pcardx{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;
+    background:#fbf7ee;color:#22201c;border:4px solid var(--rc);border-radius:12px;padding:14px 12px;box-shadow:inset 0 0 0 3px #fbf7ee,inset 0 0 0 4px color-mix(in srgb,var(--rc) 60%,#c8992c)}
+  .s6 .pcardx,.pcardx.s6{border-color:transparent;background:linear-gradient(#fbf7ee,#fbf7ee) padding-box,conic-gradient(from 0deg,#d9a93a,#b0263f,#6a3fa0,#2346a8,#2b8a5e,#d9a93a) border-box}
+  .pc-top{position:absolute;top:8px;left:10px;right:10px;display:flex;justify-content:space-between;font-weight:900;font-size:12px}
+  .pc-r{background:var(--rc);color:#fff;border-radius:3px;padding:0 6px}
+  .pc-s{color:#c8992c;letter-spacing:-1px}
+  .pc-ic{font-size:56px;line-height:1.1;margin-top:10px}
+  .pc-n{font-family:var(--display);font-weight:700;font-size:18px;line-height:1.35}
+  .pc-d{font-size:12px;font-weight:700;color:#57524a;line-height:1.5}
+  .pc-used{position:absolute;right:12px;bottom:12px;width:58px;height:58px;border:3px solid #b0263f;border-radius:50%;color:#b0263f;font-family:var(--display);font-weight:700;font-size:28px;display:flex;align-items:center;justify-content:center;transform:rotate(-14deg);opacity:.85}
+
+  /* 開ける演出（全画面） */
+  .stage{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 45%,#2c2336,#0c0a10 70%);color:#f3e9d6;overflow:hidden;cursor:pointer;--rc:#c8992c}
+  .stage.show{display:flex}
+  .st-rays{position:absolute;width:160vmax;height:160vmax;left:50%;top:45%;transform:translate(-50%,-50%);opacity:0;transition:opacity .5s;
+    background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--rc) 55%,transparent) 0 6deg,transparent 6deg 18deg);
+    -webkit-mask-image:radial-gradient(circle,#000 0,transparent 60%);mask-image:radial-gradient(circle,#000 0,transparent 60%)}
+  .stage.opening .st-rays{opacity:.9;animation:spin 14s linear infinite}
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  .st-chest{position:relative;width:200px;transition:opacity .4s,transform .4s;animation:hop2 1.6s ease-in-out infinite}
+  .st-chest svg{width:100%;display:block;overflow:visible}
+  @keyframes hop2{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .stage.opening .st-chest{animation:shakebox .5s ease-in-out 2}
+  @keyframes shakebox{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+  .st-chest .clid{transform-origin:60px 46px;transition:transform .5s .6s cubic-bezier(.3,1.5,.5,1)}
+  .stage.opening .st-chest .clid{transform:translateY(-26px) rotate(-18deg)}
+  .stage.card .st-chest{opacity:0;transform:scale(.7) translateY(40px)}
+  .st-card{position:absolute;width:210px;height:290px;perspective:1000px;opacity:0;transform:translateY(80px) scale(.5);transition:opacity .5s,transform .6s cubic-bezier(.3,1.4,.5,1);pointer-events:none}
+  .stage.card .st-card{opacity:1;transform:none}
+  .st-flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,.1,.2,1)}
+  .stage.flip .st-flip{transform:rotateY(180deg)}
+  .st-back,.st-front{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:12px}
+  .st-front{transform:rotateY(180deg)}
+  .stage.flip .st-front .pcardx{box-shadow:inset 0 0 0 3px #fbf7ee,0 0 40px color-mix(in srgb,var(--rc) 80%,transparent)}
+  .st-back{display:flex;align-items:center;justify-content:center;font-size:54px;border:4px solid #c8992c;
+    background:repeating-linear-gradient(45deg,#2a1f2e 0 10px,#33263a 10px 20px);box-shadow:inset 0 0 0 4px #1b1622,inset 0 0 0 5px #c8992c}
+  .st-msg{position:absolute;bottom:18%;font-weight:900;font-size:15px;letter-spacing:.04em;animation:blink 1.4s ease-in-out infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
+  #stDone{position:absolute;bottom:7%;width:min(80vw,300px)}
+
+  /* 持ち物のカード（先生に見せる） */
+  .tmodal{position:fixed;inset:0;z-index:75;display:none;align-items:center;justify-content:center;background:rgba(12,10,16,.62);padding:16px}
+  .tmodal.show{display:flex}
+  .tm-in{width:min(92vw,360px);max-height:92vh;overflow:auto;background:var(--panel);border:2px solid var(--lead);border-radius:var(--r-l);padding:16px;display:flex;flex-direction:column;gap:10px}
+  .tm-in .pcardx{height:330px}
+  .tm-meta{font-size:12px;font-weight:700;color:var(--ink-faint);text-align:center;line-height:1.6}
+  .tm-pin{display:flex;flex-direction:column;gap:6px}
+  .tm-pin label{font-size:13px;font-weight:900}
+  .tm-pin input{font-size:22px;letter-spacing:.4em;text-align:center;padding:8px;border:1.5px solid var(--line-strong);border-radius:var(--r-m);background:var(--panel-2);color:var(--ink)}
+  .tm-err{font-size:12px;font-weight:800;color:var(--bad);min-height:1em}
+
   /* ばらの飾り */
   .flourish{display:block;width:240px;max-width:100%;height:26px;margin:0 0 10px;color:var(--gold)}
   .rosedot{display:block;width:120px;height:20px;margin:30px auto 0;color:var(--gold)}
@@ -412,6 +496,7 @@
   <!-- RESULT / 連続日数 -->
   <section class="screen hidden" id="resultScreen"></section>
   <section class="screen hidden" id="streakScreen"></section>
+  <section class="screen tabscreen hidden" id="gachaScreen"></section>
 </div>
 
 <!-- 下タブ -->
@@ -419,9 +504,20 @@
   <button data-tab="home" class="on"><i>📖</i><span>学ぶ</span></button>
   <button data-tab="review"><i>🔁</i><span>復習</span><b class="nbadge hidden" id="navBadge">0</b></button>
   <button data-tab="quest"><i>🎯</i><span>クエスト</span></button>
+  <button data-tab="gacha"><i>🎁</i><span>宝箱</span><b class="nbadge hidden" id="gachaBadge">0</b></button>
   <button data-tab="profile"><i>📊</i><span>記録</span></button>
 </nav>
 <div class="toast" id="toast"></div>
+<!-- 宝箱を開ける演出 -->
+<div class="stage" id="stage">
+  <div class="st-rays"></div>
+  <div class="st-msg" id="stMsg"></div>
+  <div class="st-chest" id="stChest"></div>
+  <div class="st-card"><div class="st-flip"><div class="st-back"><span>🗝️</span></div><div class="st-front" id="stFront"></div></div></div>
+  <button class="bigbtn b3d hidden" id="stDone">持ち物に入れる</button>
+</div>
+<!-- 持ち物のカード（先生に見せる） -->
+<div class="tmodal" id="tmodal"></div>
 
 <!-- feedback sheet -->
 <!-- 途中でやめる 確認バー -->
@@ -502,7 +598,8 @@ function unitPool(lesson){ return lesson.pool || RAW_REKISHI[lesson.pkey] || les
 
 /* ====== progress (localStorage) ====== */
 let P={ xp:0, crowns:{}, best:{}, bestStreak:0, dayStreak:0, lastDay:null,
-  maxDayStreak:0, days:[], goal:30, today:null, miss:{}, chests:{}, sound:true, totalLessons:0, perfects:0 };
+  maxDayStreak:0, days:[], goal:30, today:null, miss:{}, chests:{}, sound:true, totalLessons:0, perfects:0,
+  keys:0, tickets:[], opened:0 };
 try{ const s=JSON.parse(localStorage.getItem('yougo_prog')||'{}'); P=Object.assign(P,s); }catch(e){}
 function save(){ try{ localStorage.setItem('yougo_prog', JSON.stringify(P)); }catch(e){} }
 function levelOf(xp){ return Math.floor(xp/100)+1; }
@@ -605,7 +702,7 @@ function quests(){
 // 達成したクエストのXPを受け取る（1日1回ずつ）。新しく達成したものを返す
 function claimQuests(){
   const d=today(), got=[];
-  quests().forEach(q=>{ if(q.done && !d.quests[q.id]){ d.quests[q.id]=true; addXp(QUEST_XP); got.push(q); } });
+  quests().forEach(q=>{ if(q.done && !d.quests[q.id]){ d.quests[q.id]=true; addXp(QUEST_XP); P.keys=(P.keys||0)+KEY_QUEST; got.push(q); } });
   return got;
 }
 
@@ -622,13 +719,14 @@ function renderStatus(){
   $('#goalCard').innerHTML='<span class="gi">🎯</span><div class="gb"><div class="gt">今日の目標 <b>'+g+' / '+P.goal+' XP</b></div>'+
     '<div class="gbar"><i style="width:'+(g/P.goal*100)+'%"></i></div></div>'+(reached?'<span class="gok">達成！</span>':'');
   const mc=missList().length; $('#navBadge').textContent=mc; $('#navBadge').classList.toggle('hidden',!mc);
+  const bx=boxesReady(); $('#gachaBadge').textContent=bx; $('#gachaBadge').classList.toggle('hidden',!bx);
 }
 $('#heroMascot').innerHTML=mascot('happy');
 
 /* ====== 画面の切りかえと下タブ ====== */
-const TABS=['home','review','quest','profile'];
+const TABS=['home','review','quest','gacha','profile'];
 function showScreen(name){
-  ['home','review','quest','profile','lesson','result','streak'].forEach(s=>$('#'+s+'Screen').classList.toggle('hidden',s!==name));
+  ['home','review','quest','gacha','profile','lesson','result','streak'].forEach(s=>$('#'+s+'Screen').classList.toggle('hidden',s!==name));
   const isTab=TABS.includes(name);
   document.body.classList.toggle('focus',!isTab);
   if(isTab) document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
@@ -639,6 +737,7 @@ function openTab(t){
   if(t==='home') renderCourse();
   if(t==='review') renderReview();
   if(t==='quest') renderQuests();
+  if(t==='gacha') renderGacha();
   if(t==='profile') renderProfile();
   showScreen(t);
 }
@@ -744,7 +843,7 @@ function renderUnitLessons(c,host){
     if(it.chest){
       const cid=it.cid, opened=P.chests[cid], ready=!!P.crowns[it.after];
       h+='<div class="node chest '+(opened?'opened':ready?'ready':'lock')+'" data-chest="'+cid+'" data-ready="'+(ready?1:0)+'" style="'+off+'">'+
-         '<div class="arch"><div class="ring">'+(opened?'✨':'🎁')+'</div></div></div>';
+         '<div class="arch"><div class="ring">'+(opened?'✨':'🗝️')+'</div></div></div>';
       return;
     }
     const l=it.l, i=it.i;
@@ -763,13 +862,139 @@ function renderUnitLessons(c,host){
   host.querySelectorAll('.node[data-lid]').forEach(n=> n.onclick=()=>startLesson(n.dataset.lid));
   host.querySelectorAll('.node.chest').forEach(n=> n.onclick=()=>openChest(n.dataset.chest, n.dataset.ready==='1'));
 }
-const CHEST_XP=20;
+// 道の上の🗝️は「鍵のかけら置き場」。手前のレッスンで王冠をとると拾える
 function openChest(cid,ready){
-  if(P.chests[cid]) return toast('この宝箱はもう開けたよ');
-  if(!ready) return toast('🔒 手前のレッスンで王冠をとると開けられるよ');
-  P.chests[cid]=true; addXp(CHEST_XP); claimQuests(); save(); sfx('chest');
-  toast('🎁 宝箱をあけた！ <b>+'+CHEST_XP+' XP</b>');
+  if(P.chests[cid]) return toast('ここのかけらはもう拾ったよ');
+  if(!ready) return toast('🔒 手前のレッスンで王冠をとると拾えるよ');
+  P.chests[cid]=true; P.keys=(P.keys||0)+KEY_CHEST; save(); sfx('chest');
+  toast('🗝️ 鍵のかけらを見つけた！ <b>+'+KEY_CHEST+'</b>');
   renderStatus(); renderCourse();
+}
+
+/* ====== 宝箱（先生ガチャ） ======
+   鍵のかけらを KEYS_PER_BOX 個集めると、宝箱を1つ開けられる。
+   かけら: レッスンで初めて王冠 +1 ／ クエスト達成 +2 ／ レベルアップ +1 ／ 道のかけら置き場 +2
+   中身は星の数で確率が決まる（星が少ないほど出やすい）。同じ星の景品どうしは同じ確率 */
+const KEY_CROWN=1, KEY_QUEST=2, KEY_LEVEL=1, KEY_CHEST=2, KEYS_PER_BOX=40;
+const TEACHERS=['松岡','船本','八塚','平根','小林','鎌形'];
+const STAR_RATE={1:36, 2:26, 3:17, 4:11, 5:8.5, 6:1.5};   // 星ごとの合計（％）
+const PRIZES=[
+  {id:'clip',   s:1, r:'N',   ic:'📎', n:'ゼムクリップ', d:'ゼムクリップを1つもらえます。'},
+  {id:'clap',   s:2, r:'HN',  ic:'👏', n:'先生達からの拍手喝采', d:'すごいテンションで褒めてもらえます。'},
+  {id:'stamp',  s:2, r:'HN',  ic:'🔖', n:'クセジュスタンプ1回', d:'好きなところに押してもらえます。'},
+  {id:'janken', s:2, r:'HN',  ic:'✊', n:'先生とじゃんけん勝負券', d:'その場で先生とじゃんけん勝負。勝ったら先生が全力でくやしがります。'},
+  {id:'photo',  s:3, r:'HN',  ic:'📸', n:'{T}先生とのツーショット券', d:'引いた瞬間、先生とツーショットをとれます。もしくはとってくれます。', t:1},
+  {id:'award',  s:3, r:'HN',  ic:'📜', n:'名前入りの表彰状', d:'あなたの名前を入れた表彰状を、先生から手渡しでもらえます。'},
+  {id:'praise', s:4, r:'SR',  ic:'🌟', n:'その場で褒められる券', d:'引いた瞬間に先生が、あなたの長所を教えてくれます。'},
+  {id:'letter', s:4, r:'SR',  ic:'✉️', n:'先生の手書き応援メッセージ', d:'先生があなたへの応援メッセージを、カードに手書きしてくれます。'},
+  {id:'drink',  s:5, r:'SR',  ic:'🥤', n:'キンキンに冷えたドリンク', d:'キンキンに冷えたドリンクを1本もらえます。'},
+  {id:'kuro',   s:5, r:'SR',  ic:'📼', n:'{T}先生の黒歴史視聴券', d:'先生が自分の黒歴史を教えてくれます。', t:1},
+  {id:'party',  s:6, r:'SSR', ic:'🎉', n:'プチパーティー券', d:'みんなでプチパーティーができます。'},
+];
+// 先生が「使用済み」にするための暗証番号（番号そのものではなく、ハッシュ値だけを持つ）
+const PIN_SALT='yougo-gacha-2026', PIN_HASH='288eff72c8b6f0abb14e11e05d19c39f21d8b8f14ae381bed0665830119202a6';
+function boxesReady(){ return Math.floor((P.keys||0)/KEYS_PER_BOX); }
+function prizeRate(p){ return STAR_RATE[p.s]/PRIZES.filter(x=>x.s===p.s).length; }
+function stars(n){ return '★'.repeat(n); }
+function drawPrize(){
+  let r=Math.random()*100, s=6;
+  for(const k of [1,2,3,4,5,6]){ if(r<STAR_RATE[k]){ s=k; break; } r-=STAR_RATE[k]; }
+  const p=pickOne(PRIZES.filter(x=>x.s===s)), tc=p.t?pickOne(TEACHERS):'';
+  return {id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), p:p.id, s:p.s, r:p.r, ic:p.ic,
+          n:p.n.replace('{T}',tc), d:p.d, at:new Date().toLocaleString('ja-JP'), used:false};
+}
+// 宝箱の絵（ふたは別の図形にして、開くときに動かす）
+function chestSvg(){
+  return '<svg viewBox="0 0 120 100" aria-hidden="true">'+
+    '<g class="cbody"><rect x="14" y="44" width="92" height="46" rx="4" fill="#7a2a1f" stroke="#1b1622" stroke-width="3"/>'+
+    '<rect x="14" y="44" width="92" height="46" rx="4" fill="url(#cw)" opacity=".35"/>'+
+    '<path d="M14 58H106M14 78H106" stroke="#c8992c" stroke-width="4"/>'+
+    '<path d="M34 44V90M86 44V90" stroke="#c8992c" stroke-width="4"/>'+
+    '<rect x="50" y="52" width="20" height="22" rx="3" fill="#e2bf5f" stroke="#1b1622" stroke-width="2.5"/>'+
+    '<path d="M60 60v7" stroke="#1b1622" stroke-width="3" stroke-linecap="round"/><circle cx="60" cy="59" r="2.6" fill="#1b1622"/></g>'+
+    '<g class="clid"><path d="M14 46V34Q14 14 60 10Q106 14 106 34V46Z" fill="#8e3324" stroke="#1b1622" stroke-width="3"/>'+
+    '<path d="M34 44V20M86 44V20" stroke="#c8992c" stroke-width="4"/><path d="M14 40H106" stroke="#c8992c" stroke-width="4"/>'+
+    '<path d="M60 10V44" stroke="#c8992c" stroke-width="3" opacity=".6"/></g>'+
+    '<defs><linearGradient id="cw" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient></defs></svg>';
+}
+function prizeCard(t){
+  return '<div class="pcardx s'+t.s+(t.used?' used':'')+'"><div class="pc-top"><span class="pc-r">'+t.r+'</span><span class="pc-s">'+stars(t.s)+'</span></div>'+
+    '<div class="pc-ic">'+t.ic+'</div><div class="pc-n">'+t.n+'</div><div class="pc-d">'+t.d+'</div>'+
+    (t.used?'<div class="pc-used">済</div>':'')+'</div>';
+}
+function renderGacha(){
+  const host=$('#gachaScreen'), k=P.keys||0, bx=boxesReady(), part=k%KEYS_PER_BOX;
+  const own=(P.tickets||[]).slice().sort((a,b)=>(a.used-b.used)||(b.s-a.s));
+  let h='<h1>宝箱</h1><div class="hero"><div class="mascot">'+mascot(bx?'happy':'normal')+'</div><div class="bubble">'+
+    (bx?'宝箱を開けられるよ！何が出るかな？':'鍵のかけらを<b>'+KEYS_PER_BOX+'個</b>集めると、宝箱を1つ開けられるよ。')+'</div></div>';
+  h+='<div class="boxcard"><div class="bc-chest'+(bx?' ready':'')+'">'+chestSvg()+'</div>'+
+     '<div class="bc-keys">🗝️ 鍵のかけら <b>'+(bx?KEYS_PER_BOX:part)+'</b> / '+KEYS_PER_BOX+'</div>'+
+     '<div class="gbar"><i style="width:'+(bx?100:part/KEYS_PER_BOX*100)+'%"></i></div>'+
+     '<div class="bc-sub">'+(bx?'開けられる宝箱：<b>'+bx+'個</b>（かけら合計 '+k+'個）':'あと '+(KEYS_PER_BOX-part)+' 個で開けられる')+'</div>'+
+     '<button class="bigbtn b3d" id="openBox"'+(bx?'':' disabled')+'>宝箱を開ける</button></div>';
+  h+='<div class="pcard"><div class="ph">鍵のかけらの集め方</div>'+
+     [['👑','レッスンで初めて王冠をとる','+'+KEY_CROWN],['🎯','デイリークエストを1つ達成','+'+KEY_QUEST],['🆙','レベルアップ','+'+KEY_LEVEL],['🗝️','道の上のかけら置き場で拾う','+'+KEY_CHEST]]
+       .map(([i,t,v])=>'<div class="krow"><span>'+i+'</span><div>'+t+'</div><b>'+v+'</b></div>').join('')+'</div>';
+  h+='<div class="pcard"><div class="ph">持ち物</div>';
+  if(!own.length) h+='<div class="more">まだ持ち物はないよ。宝箱を開けると、ここにたまるよ。</div>';
+  else h+='<div class="tlist">'+own.map(t=>'<button class="trow s'+t.s+(t.used?' used':'')+'" data-tid="'+t.id+'"><span class="tr-ic">'+t.ic+'</span><span class="tr-b"><b>'+t.n+'</b><small>'+stars(t.s)+'　'+(t.used?'使用済み（'+t.usedAt+'）':'未使用 — タップして先生に見せる')+'</small></span></button>').join('')+'</div>';
+  h+='</div>';
+  h+='<details class="pcard odds"><summary class="ph">景品と出る確率</summary><table>'+
+     PRIZES.map(p=>'<tr><td class="o-s">'+stars(p.s)+'</td><td>'+p.n.replace('{T}','○○')+(p.t?'<small>（先生は6人からランダム）</small>':'')+'</td><td class="o-p">'+prizeRate(p).toFixed(1)+'%</td></tr>').join('')+
+     '</table></details>';
+  host.innerHTML=h;
+  $('#openBox').onclick=openBox;
+  host.querySelectorAll('.trow').forEach(b=>b.onclick=()=>showTicket(b.dataset.tid));
+}
+// 開ける演出: タップで宝箱が開き、伏せたカードが出る → もう一度タップでめくる
+function openBox(){
+  if(boxesReady()<1) return;
+  P.keys-=KEYS_PER_BOX; P.opened=(P.opened||0)+1;
+  const t=drawPrize(); P.tickets=(P.tickets||[]).concat(t); save(); renderStatus();
+  const st=$('#stage');
+  st.className='stage show s'+t.s; st.dataset.phase='closed';
+  $('#stChest').innerHTML=chestSvg();
+  $('#stFront').innerHTML=prizeCard(t);
+  $('#stMsg').textContent='タップして宝箱を開けよう';
+  $('#stDone').classList.add('hidden');
+  st.onclick=()=>{
+    if(st.dataset.phase==='closed'){
+      st.dataset.phase='opening'; st.classList.add('opening'); sfx('chest'); $('#stMsg').textContent='';
+      setTimeout(()=>{ st.dataset.phase='card'; st.classList.add('card'); $('#stMsg').textContent='カードをタップしてめくろう'; }, 1100);
+    }else if(st.dataset.phase==='card'){
+      st.dataset.phase='done'; st.classList.add('flip'); $('#stMsg').textContent='';
+      setTimeout(()=>{ sfx(t.s>=5?'done':'ok'); if(t.s>=5) petals(); $('#stDone').classList.remove('hidden'); }, 450);
+    }
+  };
+  $('#stDone').onclick=e=>{ e.stopPropagation(); st.className='stage'; renderGacha(); };
+}
+// 持ち物のカードを大きく表示し、先生が暗証番号で「使用済み」にする
+let pinFails=0, pinLockUntil=0;
+async function sha256hex(s){
+  const b=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function showTicket(tid){
+  const t=(P.tickets||[]).find(x=>x.id===tid); if(!t) return;
+  const m=$('#tmodal');
+  m.innerHTML='<div class="tm-in">'+prizeCard(t)+
+    '<div class="tm-meta">もらった日時：'+t.at+(t.used?'<br>使用済み：'+t.usedAt:'')+'</div>'+
+    (t.used?'':'<div class="tm-pin hidden" id="tmPin"><label>先生の暗証番号</label><input id="pinIn" type="password" inputmode="numeric" maxlength="8" autocomplete="off"><div class="tm-err" id="pinErr"></div><button class="bigbtn b3d" id="pinOk">使用済みにする</button></div>'+
+      '<button class="bigbtn b3d tm-use" id="tmUse">先生が使用済みにする</button>')+
+    '<button class="bigbtn rbtn ghost b3d" id="tmClose">閉じる</button></div>';
+  m.classList.add('show');
+  $('#tmClose').onclick=()=>m.classList.remove('show');
+  if(t.used) return;
+  $('#tmUse').onclick=()=>{ $('#tmPin').classList.remove('hidden'); $('#tmUse').classList.add('hidden'); $('#pinIn').focus(); };
+  $('#pinOk').onclick=async()=>{
+    const err=$('#pinErr');
+    if(Date.now()<pinLockUntil){ err.textContent='しばらく待ってから入れてください'; return; }
+    let ok=false;
+    try{ ok=(await sha256hex(PIN_SALT+$('#pinIn').value.trim()))===PIN_HASH; }catch(e){ err.textContent='この画面では確認できません（https で開いてください）'; return; }
+    if(!ok){ pinFails++; if(pinFails>=5){ pinLockUntil=Date.now()+60000; pinFails=0; } err.textContent='暗証番号がちがいます'; sfx('bad'); return; }
+    t.used=true; t.usedAt=new Date().toLocaleString('ja-JP'); save(); sfx('ok');
+    showTicket(t.id); renderGacha();
+  };
 }
 
 /* ====== 復習タブ ====== */
@@ -1049,6 +1274,10 @@ function endLesson(cleared){
   const got=claimQuests();
   const goalHit = todayBefore<P.goal && d.xp>=P.goal;
   const leveledTo = levelOf(P.xp)>levelOf(xpBefore) ? levelOf(P.xp) : null;
+  // 鍵のかけら: 初めての王冠 +1、レベルアップ1回ごとに +1（クエストの分は claimQuests で加算ずみ）
+  const newCrown = cleared&&acc>=80&&!isReview&&!prevCrown;
+  const keyGain = (newCrown?KEY_CROWN:0) + (levelOf(P.xp)-levelOf(xpBefore))*KEY_LEVEL + got.length*KEY_QUEST;
+  P.keys=(P.keys||0) + (newCrown?KEY_CROWN:0) + (levelOf(P.xp)-levelOf(xpBefore))*KEY_LEVEL;
   save(); renderStatus();
   sfx(cleared?'done':'bad');
   const sc=$('#resultScreen');
@@ -1061,6 +1290,7 @@ function endLesson(cleared){
   if(cleared&&acc>=80&&!isReview&&!prevCrown) extra+='<div class="levelup" style="background:var(--eco)">👑 このレッスンに王冠を獲得！</div>';
   if(goalHit) extra+='<div class="levelup" style="background:var(--wld)">🎯 今日の目標を達成！</div>';
   got.forEach(q=>{ extra+='<div class="levelup" style="background:var(--cul)">'+q.icon+' クエスト達成：'+q.name+' +'+QUEST_XP+' XP</div>'; });
+  if(keyGain) extra+='<div class="levelup keygain">🗝️ 鍵のかけら +'+keyGain+'（あと'+(KEYS_PER_BOX-(P.keys%KEYS_PER_BOX))+'個で宝箱'+(boxesReady()?'・今'+boxesReady()+'個開けられる':'')+'）</div>';
   sc.innerHTML='<div class="result">'+
     '<div class="mascot'+(sad?' sad':'')+'">'+mascot(sad?'sad':'happy')+'</div><h2'+(sad?' class="sad"':'')+'>'+head+'</h2>'+
     '<div class="rsub">'+LS.lesson.name+'</div>'+
