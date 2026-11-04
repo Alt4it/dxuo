@@ -6,7 +6,7 @@
 <title>シャカリンゴ</title>
 <!-- アプリ（PWA）として追加するための設定 -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#d8d5cc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#d9d2c3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16141b" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="icons/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -21,12 +21,12 @@
   /* ===== デザインの約束ごと（ゴシック様式） =====
      ・色: 石灰岩の壁（地）と羊皮紙（面）。ステンドグラスの宝石色に役割を分ける
        コバルト＝操作、ルビー＝連続・まちがい、金箔＝ごほうび、エメラルド＝正解、アメジスト＝単元色の一つ
-     ・形: 石積みのように角は小さく（4〜10px）。レッスンの丸は尖頭アーチの窓
+     ・形: 角は小さく（4〜10px）。背景・単元の目次・レッスンの窓はバロック風（ダマスク模様、弓形や半円のアーチ、金の縁と要石）
      ・立体（下に影がある）＝押せるもの。読むだけのものは平らに細い線
      ・文字: 見出し・用語・問題文は Kaisei Decol（装飾のある優雅な明朝体）、選択肢やボタンはゴシック体
      ・いちばん目立たせるのは単元の帯のばら窓。ほかは静かに */
   :root{
-    --paper:#d8d5cc; --panel:#f4f1ea; --panel-2:#ebe7de; --panel-3:#cfcabf;
+    --paper:#d9d2c3; --panel:#f4f1ea; --panel-2:#ebe7de; --panel-3:#cfcabf;
     --ink:#1d1a22; --ink-soft:#4f4855; --ink-faint:#837b86;
     --line:#bfb8ab; --line-soft:#cdc7bb; --line-strong:#9e968a;
     --pol:#23408f; --eco:#a77a1d; --cul:#5b2c86; --war:#9b1d33; --wld:#1d6a4b;
@@ -36,7 +36,10 @@
     --accent:var(--pol); --on:#fff;
     --r-s:4px; --r-m:6px; --r-l:10px;
     --shadow-lift:0 10px 30px rgba(29,26,34,.22);
-    --stone:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='56'%3E%3Cg stroke='%23000' stroke-opacity='.06' fill='none'%3E%3Cpath d='M0 .5H120M0 28.5H120M.5 0V28M60.5 28V56'/%3E%3C/g%3E%3C/svg%3E");
+    /* 背景: ダマスク織のようなアカンサスの渦巻き模様と、天井から差す光 */
+    --stone:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='104'%3E%3Cg fill='none' stroke='%235a3d12' stroke-opacity='.09' stroke-width='1.2' stroke-linecap='round'%3E%3Cg transform='translate(36 52) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3Cg transform='translate(0 0) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3Cg transform='translate(72 0) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3Cg transform='translate(0 104) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3Cg transform='translate(72 104) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --crest:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 22'%3E%3Cg fill='none' stroke='%23b8892b' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath d='M22 18C14 18 9 13 12 9C14 6 18 8 16 11'/%3E%3Cpath d='M42 18C50 18 55 13 52 9C50 6 46 8 48 11'/%3E%3Cpath d='M8 15C4 15 2 13 3 11M56 15C60 15 62 13 61 11'/%3E%3C/g%3E%3Cpath d='M32 2C24 2 20 9 21 18H43C44 9 40 2 32 2Z' fill='%23e6bb52' stroke='%238a6418' stroke-width='1.2'/%3E%3Cpath d='M32 4V17M27 5L29 17M37 5L35 17M23.5 9L26 17M40.5 9L38 17' stroke='%238a6418' stroke-width='.9' fill='none'/%3E%3Cpath d='M20 18H44' stroke='%238a6418' stroke-width='1.6'/%3E%3C/svg%3E");
+    --glow:radial-gradient(130% 75% at 50% 0%,rgba(255,248,226,.9),rgba(255,248,226,0) 70%);
     --display:"Kaisei Decol",'Hiragino Mincho ProN','Yu Mincho',serif;
     --serif:"Kaisei Decol",'Hiragino Mincho ProN','Yu Mincho',serif;
     --sans:"Zen Kaku Gothic New",'Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;
@@ -50,12 +53,13 @@
       --ok:#62c79a; --ok-bg:#1a3029; --bad:#ec7b8c; --bad-bg:#3a1f27;
       --gold:#e2bf5f; --heart:#ef6b7c; --lead:#0c0a10; --on:#16141b;
       --shadow-lift:0 12px 32px rgba(0,0,0,.55);
-      --stone:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='56'%3E%3Cg stroke='%23fff' stroke-opacity='.035' fill='none'%3E%3Cpath d='M0 .5H120M0 28.5H120M.5 0V28M60.5 28V56'/%3E%3C/g%3E%3C/svg%3E");
+      --stone:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='104'%3E%3Cg fill='none' stroke='%23e2bf5f' stroke-opacity='.06' stroke-width='1.2' stroke-linecap='round'%3E%3Cg transform='translate(36 52) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3Cg transform='translate(0 0) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3Cg transform='translate(72 0) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3Cg transform='translate(0 104) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3Cg transform='translate(72 104) scale(.8)'%3E%3Cpath d='M0-26C7-16 7-4 0 6C-7-4-7-16 0-26Z'/%3E%3Cpath d='M0-19V-1'/%3E%3Cpath d='M0 6V15'/%3E%3Cpath d='M0 15C5 19 5 25 0 28C-5 25-5 19 0 15Z'/%3E%3Cpath d='M3 4C12 0 19 4 18 11C17 16 11 16 11 12C11 9 14 8 15 10'/%3E%3Cpath d='M-3 4C-12 0-19 4-18 11C-17 16-11 16-11 12C-11 9-14 8-15 10'/%3E%3Cpath d='M2-14C9-20 15-17 14-12C13-9 10-9 10-11'/%3E%3Cpath d='M-2-14C-9-20-15-17-14-12C-13-9-10-9-10-11'/%3E%3Ccircle cx='0' cy='-30' r='1.3'/%3E%3Ccircle cx='22' cy='4' r='1'/%3E%3Ccircle cx='-22' cy='4' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      --glow:radial-gradient(130% 75% at 50% 0%,rgba(226,191,95,.14),rgba(226,191,95,0) 70%);
     }
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
-  body{background:var(--paper) var(--stone);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+  body{background:var(--glow) no-repeat,var(--stone),var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
   .app{max-width:520px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;position:relative}
   button{font-family:var(--sans)}
   :focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 60%,transparent);outline-offset:2px}
@@ -89,20 +93,31 @@
   .bubble::before{content:"";position:absolute;left:-7px;bottom:14px;width:12px;height:12px;background:var(--panel);border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
   .bubble b{color:var(--war)}
 
-  .ctabs{display:flex;gap:8px;margin:2px 0 4px}
-  .ctab{flex:1;font-weight:900;font-size:14px;background:var(--panel);color:var(--ink-soft);padding:9px 6px 7px;border-radius:var(--r-m);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
+  /* 科目タブ（バロックの窓: 弓形の頂、金の二重縁、頂に小さな帆立貝の紋） */
+  .ctabs{display:flex;gap:8px;margin:14px 0 4px}
+  .ctab{position:relative;flex:1;font-weight:900;font-size:14px;color:var(--ink-soft);padding:14px 6px 7px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;
+    border-radius:50% 50% var(--r-m) var(--r-m)/16px 16px var(--r-m) var(--r-m);
+    background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 14%,var(--panel)),var(--panel) 50%);
+    border-color:color-mix(in srgb,var(--gold) 65%,var(--line));border-bottom-color:color-mix(in srgb,var(--gold) 45%,#000);
+    box-shadow:inset 0 0 0 2px var(--panel),inset 0 0 0 3px color-mix(in srgb,var(--gold) 55%,transparent)}
+  .ctab::before{content:"";position:absolute;top:-9px;left:50%;width:44px;height:15px;transform:translateX(-50%);pointer-events:none;background:var(--crest) center/contain no-repeat}
   .ctab .ce{font-size:22px;line-height:1.3}
-  .ctab[aria-selected="true"]{color:var(--on);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 65%,transparent)}
-  .ctab.c-rekishi[aria-selected="true"]{background:var(--war);border-color:var(--war);border-bottom-color:color-mix(in srgb,var(--war) 60%,#000)}
-  .ctab.c-chiri[aria-selected="true"]{background:var(--wld);border-color:var(--wld);border-bottom-color:color-mix(in srgb,var(--wld) 60%,#000)}
-  .ctab.c-komin[aria-selected="true"]{background:var(--pol);border-color:var(--pol);border-bottom-color:color-mix(in srgb,var(--pol) 60%,#000)}
+  .ctab[aria-selected="true"]{color:var(--on);background-image:linear-gradient(180deg,rgba(255,255,255,.16),rgba(0,0,0,.16));
+    box-shadow:inset 0 0 0 2px rgba(0,0,0,.14),inset 0 0 0 3px color-mix(in srgb,#f3d98a 80%,transparent)}
+  .ctab.c-rekishi[aria-selected="true"]{background-color:var(--war);border-color:var(--war);border-bottom-color:color-mix(in srgb,var(--war) 60%,#000)}
+  .ctab.c-chiri[aria-selected="true"]{background-color:var(--wld);border-color:var(--wld);border-bottom-color:color-mix(in srgb,var(--wld) 60%,#000)}
+  .ctab.c-komin[aria-selected="true"]{background-color:var(--pol);border-color:var(--pol);border-bottom-color:color-mix(in srgb,var(--pol) 60%,#000)}
   .ctab .cs{font-size:11px;font-weight:700;opacity:.8}
 
-  /* 単元の帯（ステンドグラスのばら窓） */
-  .ubanner{position:relative;overflow:hidden;margin-top:14px;border-radius:var(--r-l);padding:16px 18px 14px;color:var(--on);border:2px solid var(--lead);border-bottom-width:5px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gold) 55%,transparent)}
-  .ubanner .rose{position:absolute;top:0;right:0;width:78%;height:100%;pointer-events:none;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 50%);mask-image:linear-gradient(90deg,transparent,#000 50%)}
-  .ubanner>*:not(.rose){position:relative}
+  /* 単元の帯（バロック: 弓形の頂と金の二重縁。右に金の光芒を背負った楕円の窓） */
+  .ubanner{position:relative;overflow:hidden;margin-top:14px;padding:22px 18px 14px;color:var(--on);
+    border-radius:50% 50% var(--r-l) var(--r-l)/24px 24px var(--r-l) var(--r-l);
+    background-image:radial-gradient(120% 90% at 80% 50%,rgba(255,236,180,.22),rgba(255,236,180,0) 60%),linear-gradient(180deg,rgba(255,255,255,.12),rgba(0,0,0,.22));
+    border:2px solid color-mix(in srgb,var(--gold) 75%,#000);border-bottom-width:5px;
+    box-shadow:inset 0 0 0 4px rgba(0,0,0,.16),inset 0 0 0 5px color-mix(in srgb,#f3d98a 80%,transparent),0 6px 16px -8px rgba(60,40,10,.45)}
+  .ubanner .glory{position:absolute;top:0;right:0;width:78%;height:100%;pointer-events:none;filter:drop-shadow(0 1px 1.5px rgba(70,40,0,.55));
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 45%);mask-image:linear-gradient(90deg,transparent,#000 45%)}
+  .ubanner>*:not(.glory){position:relative}
   .ubanner .uk{font-size:12px;font-weight:800;opacity:.85}
   .ubanner .un{font-family:var(--display);font-weight:700;font-size:23px;line-height:1.35;margin-top:4px;letter-spacing:.03em}
   .ubanner .un .init{color:#f3d98a}
@@ -110,14 +125,14 @@
   .ubanner .ubar>i{display:block;height:100%;width:0;background:currentColor;transition:width .4s}
   .ubanner .up{font-size:12px;font-weight:800;margin-top:6px;opacity:.9}
 
-  /* レッスンの道（尖頭アーチの窓） */
+  /* レッスンの道（バロックの窓: 半円アーチの頂に要石、迫元に金のくり形） */
   .path{display:flex;flex-direction:column;align-items:center;gap:46px;position:relative;padding:40px 0 12px}
   .node{position:relative;display:flex;flex-direction:column;align-items:center;cursor:pointer;--c:var(--pol)}
   .node .arch{filter:drop-shadow(0 6px 0 color-mix(in srgb,var(--c) 55%,#000));transition:transform .07s,filter .07s}
   .node:active .arch{transform:translateY(4px);filter:drop-shadow(0 2px 0 color-mix(in srgb,var(--c) 55%,#000))}
   .node .ring{width:68px;height:82px;display:flex;align-items:center;justify-content:center;padding-top:14px;font-size:28px;
-    background:var(--c) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='82'%3E%3Cpath d='M0 82V40Q0 10 34 0Q68 10 68 40V82Z' fill='none' stroke='%231b1622' stroke-width='6'/%3E%3Cpath d='M7 82V41Q7 16 34 7Q61 16 61 41V82' fill='none' stroke='%23f3d98a' stroke-opacity='.6' stroke-width='1.4'/%3E%3C/svg%3E") center/100% 100% no-repeat;
-    clip-path:path('M0 82V40Q0 10 34 0Q68 10 68 40V82Z')}
+    background:var(--c) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='82'%3E%3Cpath d='M0 82V36A34 34 0 0 1 68 36V82Z' fill='none' stroke='%231b1622' stroke-width='6'/%3E%3Cpath d='M7 82V37A27 27 0 0 1 61 37V82' fill='none' stroke='%23f3d98a' stroke-opacity='.7' stroke-width='1.4'/%3E%3Cpath d='M0 33H10V39H0ZM58 33H68V39H58Z' fill='%23e6bb52' stroke='%231b1622' stroke-width='1.2'/%3E%3Cpath d='M28.5 0H39.5L37.5 12H30.5Z' fill='%23e6bb52' stroke='%231b1622' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+    clip-path:path('M0 82V36A34 34 0 0 1 68 36V82Z')}
   .node .lbl{font-weight:800;font-size:13px;margin-top:12px;color:var(--ink-soft);max-width:150px;text-align:center;line-height:1.4}
   .node .crown{position:absolute;top:-6px;right:50%;transform:translateX(38px) rotate(12deg);font-size:19px;z-index:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
   .node.done{--c:var(--gold)}
@@ -130,15 +145,22 @@
   @keyframes hop{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-4px)}}
 
   /* 単元の目次 */
-  .unitgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+  /* 単元の目次（バロックの窓: 弓形の頂、金の二重縁、頂に帆立貝の紋。左右対称に中央ぞろえ） */
+  .unitgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px 10px;margin-top:24px}
   @media (max-width:380px){ .unitgrid{grid-template-columns:1fr} }
-  .ucard{text-align:left;border-radius:var(--r-m);background:var(--panel);padding:12px 14px;cursor:pointer;display:flex;flex-direction:column;gap:6px}
-  .ucard .uno{display:inline-flex;align-self:flex-start;color:var(--on);font-size:11px;font-weight:900;padding:1px 9px;border-radius:2px}
+  .ucard{position:relative;text-align:center;align-items:center;cursor:pointer;display:flex;flex-direction:column;gap:6px;padding:22px 14px 13px;
+    border-radius:50% 50% var(--r-m) var(--r-m)/20px 20px var(--r-m) var(--r-m);
+    background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 14%,var(--panel)),var(--panel) 45%);
+    border-color:color-mix(in srgb,var(--gold) 70%,var(--line));border-bottom-color:color-mix(in srgb,var(--gold) 50%,#000);
+    box-shadow:inset 0 0 0 3px var(--panel),inset 0 0 0 4px color-mix(in srgb,var(--gold) 60%,transparent),0 4px 14px -6px rgba(60,40,10,.35)}
+  .ucard::before{content:"";position:absolute;top:-12px;left:50%;width:66px;height:23px;transform:translateX(-50%);pointer-events:none;
+    background:var(--crest) center/contain no-repeat}
+  .ucard .uno{display:inline-flex;color:var(--on);font-size:11px;font-weight:900;padding:1px 10px;border-radius:2px;box-shadow:inset 0 0 0 1px color-mix(in srgb,#f3d98a 70%,transparent)}
   .ucard .un{font-family:var(--display);font-weight:700;font-size:18px;color:var(--ink);line-height:1.4;letter-spacing:.02em}
-  .ucard .umeta{font-size:12px;font-weight:700;color:var(--ink-faint);display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
-  .ucard .ubar2{height:6px;border-radius:2px;background:var(--panel-3);overflow:hidden}
+  .ucard .umeta{font-size:12px;font-weight:700;color:var(--ink-faint);display:flex;align-items:center;justify-content:center;gap:8px;font-variant-numeric:tabular-nums}
+  .ucard .ubar2{align-self:stretch;height:6px;border-radius:2px;background:var(--panel-3);overflow:hidden}
   .ucard .ubar2>i{display:block;height:100%;width:0}
-  .ucard.cleared{border-color:var(--gold);border-bottom-color:color-mix(in srgb,var(--gold) 65%,#000)}
+  .ucard.cleared{background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 30%,var(--panel)),var(--panel) 60%);border-color:var(--gold);border-bottom-color:color-mix(in srgb,var(--gold) 60%,#000)}
   .backbtn{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font-weight:800;font-size:13px;background:var(--panel);color:var(--ink-soft);padding:6px 14px;border-radius:var(--r-m);cursor:pointer;margin:2px 0}
   .backbtn:hover{color:var(--ink)}
 
@@ -700,11 +722,28 @@ function mascot(mood){
         ? '<circle cx="58" cy="23.5" r="4" fill="'+R+'"/><path d="M47 9.5q5-2.5 10 0" fill="none" '+line+'/>'
         : '<circle cx="61" cy="16.2" r="4.6" fill="'+R+'"/><circle cx="62.4" cy="14.8" r="1.4" fill="#fff"/>');
   const tear = mood==='sad' ? '<path d="M48 30q-2.6 4.2 0 5.6q2.6-1.4 0-5.6z" fill="#7fb7e6"/>' : '';
-  return '<svg viewBox="0 0 100 100" aria-hidden="true">'+
+  const Gd='#e6bb52', Dk='#8a6418', Hat='#3b2a5e', Cr='#8e1c31';   // 金・金の影・帽子・マントの色
+  const thin='stroke="'+O+'" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"';
+  // 貴族の装い: 三角帽（金の縁・赤い花形記章・白い羽根）、レースの胸飾り（ジャボ）と赤いリボン、金ボタン、深紅のマント
+  const hat='<g transform="translate(0 -2) rotate(-5 57 6)">'+
+      '<path d="M70 -2C77 -15 92 -14 97 -5C91 -8 85 -7 81 -1C78 3 73 3 70 -2Z" fill="'+W+'" '+thin+'/>'+
+      '<path d="M76 -6C81 -10 87 -10 92 -7" fill="none" stroke="'+O+'" stroke-width=".9" stroke-linecap="round"/>'+
+      '<path d="M42 5C43 -8 71 -10 74 3Z" fill="'+Hat+'" stroke="'+Dk+'" stroke-width="1.2" stroke-linejoin="round"/>'+
+      '<path d="M29 6C37 -2 47 4 57 3C67 2 77 -4 87 4C81 10 69 9 57 10C45 11 35 12 29 6Z" fill="'+Hat+'" stroke="'+Gd+'" stroke-width="2" stroke-linejoin="round"/>'+
+      '<circle cx="42" cy="6.5" r="3.2" fill="#c8341f" stroke="'+Gd+'" stroke-width="1.2"/><circle cx="42" cy="6.5" r="1" fill="'+Gd+'"/>'+
+    '</g>';
+  const cape='<path d="M35 47C22 58 20 78 27 89H79C86 78 85 58 73 47Z" fill="'+Cr+'" stroke="'+Gd+'" stroke-width="2" stroke-linejoin="round"/>';
+  const jabot=
+      '<path d="M45 48C48 50 56 50 59 48C60 51 59 54 57 55C58 57 57 60 54 61C52 62 50 62 49 61C46 60 45 57 46 55C44 54 43 51 45 48Z" fill="#f4ead6" '+thin+'/>'+
+      '<path d="M46.5 54.5C49.5 56 54.5 56 57.5 54.5M48.5 60C50.5 61 53.5 61 55.5 60" fill="none" stroke="'+O+'" stroke-width=".9" stroke-linecap="round"/>'+
+      '<path d="M45.5 43L52 46.5L58.5 43V50L52 46.5L45.5 50Z" fill="#c8341f" stroke="'+Dk+'" stroke-width="1" stroke-linejoin="round"/>'+
+      '<circle cx="52" cy="46.5" r="2" fill="'+Gd+'" stroke="'+Dk+'" stroke-width=".8"/>'+
+      '<g fill="'+Gd+'" stroke="'+Dk+'" stroke-width=".8"><circle cx="53" cy="67" r="1.9"/><circle cx="53" cy="74" r="1.9"/><circle cx="53" cy="81" r="1.9"/></g>';
+  return '<svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(6 11) scale(.88)">'+
     '<ellipse cx="53" cy="95" rx="26" ry="3.5" fill="rgba(0,0,0,.13)"/>'+
     // きらきら（万歳のときだけ見える）
-    '<g class="msp" fill="#e6bb52"><path d="M8 6l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M93 2l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z"/></g>'+
-    '<g class="mb">'+
+    '<g class="msp" fill="#e6bb52"><path d="M8 6l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M98 14l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z"/></g>'+
+    '<g class="mb">'+cape+
     // たれ耳（頭のうしろから下へ）
     '<path class="me" d="M70 15C82 15 89 24 90 38C91 52 90 62 87 68C84 71 81 68 81 62C81 50 79 38 74 30Z" fill="'+W+'" '+line+'/>'+
     // 足
@@ -713,6 +752,7 @@ function mascot(mood){
     '<path d="M30 24C32 12 48 5 62 7C74 9 80 18 79 28C78 35 75 40 74 46C80 56 82 72 76 81C70 89 38 89 32 81C26 72 28 56 34 46C30 40 28 32 30 24Z" fill="'+W+'" '+line+'/>'+
     // 頭のてっぺんの小さな角
     '<path d="M37 14q-2-6 2-8q2 3 3 6" fill="'+W+'" '+line+'/>'+
+    hat+jabot+
     // ほっぺと「m」
     '<ellipse cx="63.5" cy="33.5" rx="6.5" ry="4" fill="#f6b3a4" opacity=".7"/>'+
     '<path d="M61 34.6v-1.8q1.1-1.4 1.8 0v1.8v-1.8q1.1-1.4 1.8 0v1.8" fill="none" stroke="'+R+'" stroke-width=".9" stroke-linecap="round"/>'+
@@ -725,7 +765,7 @@ function mascot(mood){
     '<path class="ma ml" d="M31 60q-8 2-8 8q2 4 8 1" fill="'+W+'" '+line+'/><path class="ma mr" d="M77 60q7 3 6 9q-3 3-7 0" fill="'+W+'" '+line+'/>'+
     // 万歳の腕（喜ぶときだけ出す）
     upArm('mu mul','M34 57Q22 55 11 46',O,W)+upArm('mu mur','M74 55Q86 51 95 39',O,W)+
-    '</g></svg>';
+    '</g></g></svg>';
 }
 function upArm(cls,d,O,W){
   return '<g class="'+cls+'"><path d="'+d+'" fill="none" stroke="'+O+'" stroke-width="9.6" stroke-linecap="round"/>'+
@@ -857,22 +897,29 @@ function renderUnitIndex(c,host){
   host.innerHTML=h;
   host.querySelectorAll('.ucard').forEach(b=> b.onclick=()=>{ curUnit=b.dataset.uid; renderCourse(); window.scrollTo(0,0); });
 }
-// ステンドグラスのばら窓。8枚の花びら窓に色ガラスを入れ、黒い鉛の線で区切る
-function roseWindow(){
-  const GLASS=['#2346a8','#a3243b','#d9a93a','#2b8a5e'], cx=150, cy=60;
-  let petals='', spokes='';
-  for(let k=0;k<8;k++){
-    const a=k*Math.PI/4, b=a+Math.PI/8;
-    petals+='<circle cx="'+(cx+40*Math.cos(a)).toFixed(1)+'" cy="'+(cy+40*Math.sin(a)).toFixed(1)+'" r="20" fill="'+GLASS[k%4]+'" fill-opacity=".62"/>';
-    spokes+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+76*Math.cos(b)).toFixed(1)+'" y2="'+(cy+76*Math.sin(b)).toFixed(1)+'"/>';
+// バロックの楕円窓（オクルス）。後ろに金の光芒、上に帆立貝、左右にC字の渦巻きを添える
+function gloryWindow(){
+  const cx=142, cy=62, G='#f3d98a', D='#8a6418';
+  let rays='';
+  for(let k=0;k<32;k++){
+    const a=k*Math.PI/16, w=Math.PI/64, r=k%2?70:96;
+    const p=(ang,rr)=>(cx+rr*Math.cos(ang)).toFixed(1)+' '+(cy+rr*Math.sin(ang)).toFixed(1);
+    rays+='<path d="M'+p(a-w,36)+'L'+p(a,r)+'L'+p(a+w,36)+'Z" fill-opacity="'+(k%2?'.28':'.4')+'"/>';
   }
-  return '<svg class="rose" viewBox="0 0 200 120" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">'+
-    '<circle cx="'+cx+'" cy="'+cy+'" r="72" fill="#fff" fill-opacity=".1"/>'+petals+
-    '<circle cx="'+cx+'" cy="'+cy+'" r="15" fill="#e8c35a" fill-opacity=".85"/>'+
-    '<g fill="none" stroke="#1b1622" stroke-opacity=".8" stroke-width="2.6">'+spokes+
-    '<circle cx="'+cx+'" cy="'+cy+'" r="72" stroke-width="4"/><circle cx="'+cx+'" cy="'+cy+'" r="60"/>'+
-    '<circle cx="'+cx+'" cy="'+cy+'" r="15"/></g>'+
-    '<g fill="none" stroke="#1b1622" stroke-opacity=".8" stroke-width="2.6">'+petals.replace(/ fill="[^"]+" fill-opacity="[^"]+"/g,'')+'</g></svg>';
+  const scrollR='M'+(cx+34)+' '+(cy+6)+'c12 2 18 10 14 18c-3 6-11 5-10-1c1-4 6-4 6 0';
+  const scrollL='M'+(cx-34)+' '+(cy+6)+'c-12 2-18 10-14 18c3 6 11 5 10-1c-1-4-6-4-6 0';
+  return '<svg class="glory" viewBox="0 0 200 120" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">'+
+    '<g fill="'+G+'">'+rays+'</g>'+
+    '<ellipse cx="'+cx+'" cy="'+cy+'" rx="26" ry="33" fill="#fff8e2" fill-opacity=".22"/>'+
+    '<ellipse cx="'+cx+'" cy="'+cy+'" rx="16" ry="21" fill="'+G+'" fill-opacity=".35"/>'+
+    '<g fill="none" stroke="'+G+'" stroke-linecap="round">'+
+      '<ellipse cx="'+cx+'" cy="'+cy+'" rx="29" ry="36" stroke-width="5"/>'+
+      '<ellipse cx="'+cx+'" cy="'+cy+'" rx="29" ry="36" stroke="'+D+'" stroke-width="1" stroke-opacity=".7"/>'+
+      '<ellipse cx="'+cx+'" cy="'+cy+'" rx="23" ry="30" stroke-width="1.2" stroke-opacity=".8"/>'+
+      '<path d="'+scrollR+'" stroke-width="3"/><path d="'+scrollL+'" stroke-width="3"/></g>'+
+    '<path d="M'+cx+' '+(cy-50)+'c-10 0-15 7-14 15h28c1-8-4-15-14-15z" fill="'+G+'" stroke="'+D+'" stroke-width="1"/>'+
+    '<path d="M'+cx+' '+(cy-48)+'v12M'+(cx-5)+' '+(cy-47)+'l2 11M'+(cx+5)+' '+(cy-47)+'l-2 11M'+(cx-10)+' '+(cy-43)+'l4 7M'+(cx+10)+' '+(cy-43)+'l-4 7" stroke="'+D+'" stroke-width=".9" fill="none"/>'+
+    '</svg>';
 }
 // 写本の飾り頭文字: 最初の1文字を金の枠に入れる
 function illum(s){ return '<span class="init">'+s.charAt(0)+'</span>'+s.slice(1); }
@@ -899,7 +946,7 @@ function renderUnitLessons(c,host){
   const total=u.lessons.length, done=unitDone(u);
   const ui=c.units.indexOf(u), ucol=UNITCOLORS[ui%UNITCOLORS.length];
   let h='<button class="backbtn b3d" id="toUnits">◀ '+(c.unitLabel||'時代')+'一覧へ</button>';
-  h+='<div class="ubanner" style="background:'+ucol+'">'+roseWindow()+'<div class="uk">'+c.name+'・'+(c.unitLabel||'時代')+' '+(ui+1)+'</div>'+
+  h+='<div class="ubanner" style="background-color:'+ucol+'">'+gloryWindow()+'<div class="uk">'+c.name+'・'+(c.unitLabel||'時代')+' '+(ui+1)+'</div>'+
      '<div class="un">'+illum(u.name)+'</div>'+
      '<div class="ubar"><i style="width:'+(total?done/total*100:0)+'%"></i></div>'+
      '<div class="up">👑 '+done+' / '+total+' レッスン達成</div></div>';
