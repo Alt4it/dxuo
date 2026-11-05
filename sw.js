@@ -3,7 +3,7 @@
    - アイコンなどは保存した版を優先
    - Google Fonts は使うたびに保存しておき、圏外でも同じフォントで表示する
    アプリを更新したら VERSION を上げる */
-const VERSION = 'yougo-v14';
+const VERSION = 'yougo-v15';
 const CORE = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png',
   './icons/apple-touch-icon.png', './icons/favicon-32.png'];
