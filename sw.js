@@ -3,7 +3,8 @@
    - アイコンなどは保存した版を優先
    - Google Fonts は使うたびに保存しておき、圏外でも同じフォントで表示する
    アプリを更新したら VERSION を上げる */
-const VERSION = 'yougo-v16';
+const VERSION = 'yougo-v17';
+const STATE = 'shakaringo-state';   // 通知の文面に使う、おさらいの予定日（アプリが書く）
 const CORE = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png',
   './icons/apple-touch-icon.png', './icons/favicon-32.png'];
@@ -16,7 +17,7 @@ self.addEventListener('install', e => {
 
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k))))
+    caches.keys().then(keys => Promise.all(keys.filter(k => k !== VERSION && k !== STATE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -53,4 +54,36 @@ self.addEventListener('fetch', e => {
   if (url.origin === self.location.origin) {
     e.respondWith(caches.match(req).then(hit => hit || fetch(req)));
   }
+});
+
+// リマインド通知: サーバーからの合図（中身なし）を受けて、ここで文面を作る
+const REMIND_LINES = [
+  '今日の用語、まだだよ。3分だけいっしょにやろう！',
+  'ぼくはここで待ってるよ。今日も1レッスンやってみない？',
+  '連続記録をのばすチャンス！今日も1レッスンいこう',
+  '宝箱の鍵のかけら、今日も集めよう！',
+];
+async function remindBody() {
+  try {
+    const r = await (await caches.open(STATE)).match(new URL('__state', self.registration.scope).href);
+    if (r) {
+      const d = new Date();
+      const today = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      const n = ((await r.json()).dues || []).filter(x => x <= today).length;
+      if (n > 0) return 'おさらいが' + n + 'レッスンあるよ。忘れる前にいっしょにやろう！';
+    }
+  } catch (e) {}
+  return REMIND_LINES[Math.floor(Math.random() * REMIND_LINES.length)];
+}
+self.addEventListener('push', e => {
+  e.waitUntil(remindBody().then(body => self.registration.showNotification('モンテくんより', {
+    body, icon: './icons/icon-192.png', tag: 'shakaringo-daily', data: { url: self.registration.scope },
+  })));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+    const open = list.find(c => c.url.startsWith(self.registration.scope) && 'focus' in c);
+    return open ? open.focus() : clients.openWindow(self.registration.scope);
+  }));
 });

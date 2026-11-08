@@ -337,6 +337,28 @@
   .seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(64px,1fr));gap:8px;margin-top:4px}
   .seg button{background:var(--panel);color:var(--ink-soft);border-radius:var(--r-s);padding:7px 4px;font-weight:900;font-size:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center}
   .seg button small{font-size:11px;font-weight:700;opacity:.8}
+  .rnote{font-size:12.5px;font-weight:700;color:var(--ink-soft);line-height:1.6;margin:2px 0 8px}
+  /* みんなのレベル */
+  .rkform{display:flex;gap:8px;margin-top:6px}
+  .rkform input{flex:1;min-width:0;font:inherit;font-size:16px;font-weight:700;color:var(--ink);background:var(--panel-2);border:1.5px solid var(--line-strong);border-radius:var(--r-s);padding:7px 10px}
+  .rkbtn{flex:none;background:var(--pol);color:var(--on);font-weight:900;font-size:13.5px;padding:7px 14px;border-radius:var(--r-s);cursor:pointer;border-color:var(--pol);border-bottom-color:color-mix(in srgb,var(--pol) 60%,#000)}
+  .rkwarn{font-size:12.5px;font-weight:800;color:var(--bad);margin:6px 0}
+  .rklink{background:none;border:none;color:var(--ink-faint);font-size:12px;font-weight:800;text-decoration:underline;cursor:pointer;padding:4px 2px}
+  .rkt{display:flex;margin-top:10px}
+  .rkme{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13.5px;font-weight:700;color:var(--ink-soft)}
+  .rkme b{color:var(--ink)} .rkme .rkpos{color:var(--war)}
+  .rkact{display:flex;gap:10px}
+  .rklist{margin-top:8px;max-height:330px;overflow-y:auto;border-top:1px solid var(--line-soft)}
+  .rklist.rkmine{max-height:none;border-top:2px dashed var(--line-strong);margin-top:4px}
+  .rkrow{display:flex;align-items:center;gap:8px;padding:7px 6px;border-bottom:1px solid var(--line-soft);font-size:13.5px}
+  .rkrow.me{background:color-mix(in srgb,var(--gold) 16%,var(--panel));border-radius:var(--r-s)}
+  .rkn{flex:none;width:26px;text-align:center;font-weight:900;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .rkname{flex:1;min-width:0;font-family:var(--display);font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rklv{flex:none;font-weight:900;color:var(--pol);font-variant-numeric:tabular-nums}
+  .rkst{flex:none;font-size:11.5px;font-weight:700;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .rkdel{flex:none;background:var(--bad-bg);color:var(--bad);border:1px solid var(--bad);border-radius:var(--r-s);font-size:11.5px;font-weight:900;padding:2px 7px;cursor:pointer}
+  .rtime{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;font-size:13.5px;font-weight:800;color:var(--ink-soft)}
+  .rtime select{font:inherit;font-weight:900;color:var(--ink);background:var(--panel-2);border:1.5px solid var(--line-strong);border-radius:var(--r-s);padding:6px 10px}
   .seg button.on{background:var(--accent);color:var(--on);border-color:var(--accent);border-bottom-color:color-mix(in srgb,var(--accent) 60%,#000)}
   #revStart{margin-top:2px}
 
@@ -727,7 +749,7 @@ function unitPool(lesson){ return lesson.pool || RAW_REKISHI[lesson.pkey] || les
 /* ====== progress (localStorage) ====== */
 let P={ xp:0, crowns:{}, best:{}, bestStreak:0, dayStreak:0, lastDay:null,
   maxDayStreak:0, days:[], goal:30, today:null, miss:{}, chests:{}, sound:true, totalLessons:0, perfects:0,
-  keys:0, tickets:[], opened:0 };
+  keys:0, tickets:[], opened:0, remind:{on:false, time:'19:00', ping:null, sync:null}, player:{name:'', token:'', removed:false} };
 try{ const s=JSON.parse(localStorage.getItem('yougo_prog')||'{}'); P=Object.assign(P,s); }catch(e){}
 function save(){ try{ localStorage.setItem('yougo_prog', JSON.stringify(P)); }catch(e){} }
 function levelOf(xp){ return Math.floor(xp/100)+1; }
@@ -924,6 +946,7 @@ function renderStatus(){
       '<div class="ss">次：'+x.c.name+'・'+x.u.name+'「'+x.l.name+'」</div></div><button class="srsgo b3d" id="srsGo">おさらい</button>';
     $('#srsGo').onclick=()=>{ const d2=srsDue(); if(d2.length) startWith(findLesson(d2[0])); };
   }else{ sc.className='hidden'; sc.innerHTML=''; }
+  remindMirror();
   const mc=missList().length; $('#navBadge').textContent=mc; $('#navBadge').classList.toggle('hidden',!mc);
   const bx=boxesReady(); $('#gachaBadge').textContent=bx; $('#gachaBadge').classList.toggle('hidden',!bx);
 }
@@ -1261,8 +1284,10 @@ function renderProfile(){
   const S=[['🔥',P.dayStreak||0,'連続日数'],['🏆',P.maxDayStreak||0,'最長連続日数'],['⭐',P.xp,'総XP'],
            ['👑',crowns,'王冠'],['📘',P.totalLessons||0,'終えたレッスン'],['⚡',P.bestStreak||0,'最高連続正解']];
   h+='<div class="sgrid">'+S.map(([i,v,l])=>'<div class="sbox"><span>'+i+'</span><div><b>'+v+'</b><small>'+l+'</small></div></div>').join('')+'</div>';
+  if(PUSH_CFG.url) h+='<div class="pcard" id="rankCard"></div>';
   h+='<div class="pcard"><div class="ph">実績バッジ</div><div class="bgrid">'+
      BADGES.map(b=>'<div class="badge'+(b.ok()?'':' off')+'"><i>'+b.ic+'</i><b>'+b.nm+'</b><small>'+b.how+'</small></div>').join('')+'</div></div>';
+  h+=remindCard();
   h+='<div class="pcard"><div class="ph">1日の目標</div><div class="seg" id="goalSeg">'+
      [[10,'ゆったり'],[20,'ふつう'],[30,'しっかり'],[50,'がっつり']].map(([v,n])=>'<button class="b3d'+(P.goal===v?' on':'')+'" data-v="'+v+'">'+n+'<small>'+v+' XP</small></button>').join('')+'</div>'+
      '<div class="ph" style="margin-top:16px">効果音</div><div class="seg" id="sndSeg">'+
@@ -1270,6 +1295,229 @@ function renderProfile(){
   host.innerHTML=h;
   host.querySelectorAll('#goalSeg button').forEach(b=>b.onclick=()=>{ P.goal=+b.dataset.v; save(); renderStatus(); renderProfile(); });
   host.querySelectorAll('#sndSeg button').forEach(b=>b.onclick=()=>{ P.sound=b.dataset.v==='1'; save(); renderProfile(); sfx('ok'); });
+  host.querySelectorAll('#remSeg button').forEach(b=>b.onclick=()=>{ b.dataset.v==='1' ? remindOn() : remindOff(); });
+  const rt=host.querySelector('#remTime'); if(rt) rt.onchange=()=>remindSetTime(rt.value);
+  if(PUSH_CFG.url){ drawRank(); loadRank(); }
+}
+
+/* ====== みんなのレベル（ランキング） ======
+   ニックネームを登録した生徒だけが、通知サーバーの /rank/ に記録を送る。token は端末の外に見せない乱数 */
+const RANK={data:null, at:0, failed:false, busy:false, edit:false, msg:'', pinOpen:false, pin:null};
+const RANK_ERR={taken:'その名前はもう使われています',ng:'その名前は使えません',name:'10文字以内で、記号を使わない名前にしてね',
+  removed:'その名前は先生に消されました。別の名前にしてね',full:'登録できる人数をこえています'};
+function rkEsc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function rankToken(){
+  if(!P.player.token){
+    const b=crypto.getRandomValues(new Uint8Array(24));
+    P.player.token=btoa(String.fromCharCode(...b)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); save();
+  }
+  return P.player.token;
+}
+async function rankPost(path,body){
+  const r=await fetch(PUSH_CFG.url+'/rank/'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),keepalive:true});
+  let d={}; try{ d=await r.json(); }catch(e){}
+  return {s:r.status,d};
+}
+function rankBody(name){ return {token:rankToken(), name, xp:P.xp, streak:P.dayStreak||0, crowns:Math.min(300,Object.keys(P.crowns).length)}; }
+// レッスンのあとなどに、登録ずみの生徒の記録を送る
+async function rankSync(){
+  if(!PUSH_CFG.url || !P.player.name) return;
+  try{
+    const r=await rankPost('profile',rankBody(P.player.name));
+    if(r.s===403 && r.d.error==='removed'){ P.player.name=''; P.player.removed=true; save(); }
+    RANK.at=0;
+  }catch(e){}
+}
+async function loadRank(force){
+  if(RANK.busy || (!force && Date.now()-RANK.at<20000)) return;
+  RANK.busy=true;
+  try{
+    await rankSync();
+    const r=await rankPost('list',P.player.token?{token:P.player.token}:{});
+    if(r.s!==200) throw new Error('rank');
+    RANK.data=r.d; RANK.at=Date.now(); RANK.failed=false;
+  }catch(e){ RANK.failed=true; }
+  RANK.busy=false; drawRank();
+}
+function rankRow(r,rank){
+  const m=['🥇','🥈','🥉'][rank-1]||rank;
+  return '<div class="rkrow'+(r.me?' me':'')+'"><span class="rkn">'+m+'</span><b class="rkname">'+rkEsc(r.name)+'</b>'+
+    '<span class="rklv">Lv.'+r.lv+'</span><span class="rkst">🔥'+r.streak+' 👑'+r.crowns+'</span>'+
+    (RANK.pin?'<button class="rkdel" data-id="'+r.id+'" data-n="'+rkEsc(r.name)+'">消す</button>':'')+'</div>';
+}
+function drawRank(){
+  const box=$('#rankCard'); if(!box) return;
+  const P2=P.player, D=RANK.data, me=D&&D.me;
+  let h='<div class="ph">みんなのレベル</div>';
+  if(!P2.name || RANK.edit){
+    h+=(P2.removed&&!P2.name?'<p class="rkwarn">名前は先生によって消されました。別の名前で登録できます。</p>':'')+
+       '<p class="rnote">ニックネームを登録すると、ほかの生徒とレベルを見せ合えるよ。みんなに見えるので、<b>本名や人がいやがる名前はやめよう</b>。</p>'+
+       '<div class="rkform"><input id="rkName" maxlength="10" placeholder="ニックネーム（10文字まで）" value="'+rkEsc(P2.name)+'" autocomplete="off">'+
+       '<button class="b3d rkbtn" id="rkSave">'+(P2.name?'変更':'参加する')+'</button></div>'+
+       (P2.name?'<button class="rklink" id="rkCancel">やめる</button>':'')+
+       (RANK.msg?'<p class="rkwarn">'+rkEsc(RANK.msg)+'</p>':'');
+  }else{
+    h+='<div class="rkme"><span>あなた：<b>'+rkEsc(P2.name)+'</b>'+(me?'　<b class="rkpos">'+me.rank+'位</b> / '+D.total+'人':'')+'</span>'+
+       '<span class="rkact"><button class="rklink" id="rkEdit">名前を変更</button><button class="rklink" id="rkLeave">抜ける</button></span></div>';
+  }
+  if(D && D.rows.length){
+    h+='<div class="rklist">'+D.rows.map((r,i)=>rankRow(r,i+1)).join('')+'</div>';
+    if(me && !D.rows.some(r=>r.me)) h+='<div class="rklist rkmine">'+rankRow(me,me.rank)+'</div>';
+  }else if(RANK.failed){ h+='<p class="rnote">電波のあるところで見られるよ。</p>'; }
+  else if(!D){ h+='<p class="rnote">読みこみ中…</p>'; }
+  else { h+='<p class="rnote">まだだれも参加していません。最初の1人になろう！</p>'; }
+  h+= RANK.pin ? '<button class="rklink rkt" id="rkPinOff">先生用を閉じる</button>'
+    : RANK.pinOpen ? '<div class="rkform rkt"><input id="rkPin" type="password" inputmode="numeric" placeholder="先生用の番号" autocomplete="off"><button class="b3d rkbtn" id="rkPinGo">確認</button></div>'
+    : '<button class="rklink rkt" id="rkPinShow">先生用</button>';
+  box.innerHTML=h;
+  const on=(s,f)=>{ const e=box.querySelector(s); if(e) e.onclick=f; };
+  on('#rkSave',rankSaveName);
+  on('#rkCancel',()=>{ RANK.edit=false; RANK.msg=''; drawRank(); });
+  on('#rkEdit',()=>{ RANK.edit=true; RANK.msg=''; drawRank(); });
+  on('#rkLeave',rankLeave);
+  on('#rkPinShow',()=>{ RANK.pinOpen=true; drawRank(); });
+  on('#rkPinOff',()=>{ RANK.pin=null; RANK.pinOpen=false; drawRank(); });
+  on('#rkPinGo',rankPinCheck);
+  box.querySelectorAll('.rkdel').forEach(b=>b.onclick=()=>rankRemove(b.dataset.id,b.dataset.n));
+}
+async function rankSaveName(){
+  const el=$('#rkName'); if(!el) return;
+  const name=el.value.normalize('NFKC').trim().replace(/\s+/g,' ');
+  if(!name){ RANK.msg='名前を入れてね'; return drawRank(); }
+  try{
+    const r=await rankPost('profile',rankBody(name));
+    if(r.s===200){ P.player.name=name; P.player.removed=false; save(); RANK.edit=false; RANK.msg=''; toast('🏅 '+rkEsc(name)+' で登録しました'); await loadRank(true); return; }
+    RANK.msg=RANK_ERR[r.d.error]||'登録できませんでした';
+  }catch(e){ RANK.msg='つながりませんでした。電波のよい場所でもう一度ためしてね'; }
+  drawRank();
+}
+async function rankLeave(){
+  if(!confirm('ランキングから抜けますか？（学習の記録は消えません）')) return;
+  try{
+    const r=await rankPost('leave',{token:rankToken()});
+    if(r.s!==200) throw new Error('leave');
+    P.player.name=''; save(); toast('ランキングから抜けました'); await loadRank(true);
+  }catch(e){ toast('つながりませんでした。もう一度ためしてね'); }
+}
+async function rankPinCheck(){
+  const el=$('#rkPin'); if(!el||!el.value) return;
+  const pin=el.value;
+  try{
+    const r=await rankPost('admin',{pin});
+    if(r.s===200){ RANK.pin=pin; RANK.pinOpen=false; return drawRank(); }
+    toast(r.s===429?'今日はこれ以上ためせません':'番号がちがいます');
+  }catch(e){ toast('つながりませんでした'); }
+}
+async function rankRemove(id,name){
+  if(!confirm('「'+name+'」の名前をランキングから消しますか？')) return;
+  try{
+    const r=await rankPost('remove',{pin:RANK.pin,id});
+    if(r.s!==200) throw new Error('remove');
+    toast('消しました'); await loadRank(true);
+  }catch(e){ toast('消せませんでした'); }
+}
+
+/* ====== リマインド通知 ======
+   通知サーバー（通知サーバー/worker.js）に「宛先と時刻」だけを登録する。文面は sw.js が作る。
+   url が空のあいだは、記録画面に設定を出さない */
+const PUSH_CFG={ url:'https://shakaringo-push.shakaringo.workers.dev', key:'BPgPgMZHoweUi05WFyxevsCW_nOALdgPbuR9vK175T1kVo_gEk1t5Py0_R-n4n3DUu0Aza7K_zrE-B04hfNe8yk' };   // 通知サーバーの URL と VAPID 公開鍵
+const REMIND_TIMES=['16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
+let remindBusy=false;
+function isInstalled(){ return navigator.standalone===true || matchMedia('(display-mode: standalone)').matches; }
+function remindEnv(){
+  if(!PUSH_CFG.url || !PUSH_CFG.key) return 'noconfig';
+  if(isIOS && !isInstalled()) return 'install';
+  if(!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) return 'unsupported';
+  if(Notification.permission==='denied') return 'denied';
+  return 'ok';
+}
+function remindCard(){
+  const env=remindEnv(); if(env==='noconfig') return '';
+  const R=P.remind;
+  const msg={ install:'iPhoneは、ホーム画面に追加した「シャカリンゴ」のアイコンから開くと設定できます。',
+    unsupported:'この端末では通知を使えません（iPhoneはiOS 16.4以降が必要です）。',
+    denied:'通知がブロックされています。スマホの設定で、シャカリンゴの通知を許可してください。' }[env];
+  let h='<div class="pcard"><div class="ph">毎日のリマインド</div>';
+  if(msg) return h+'<p class="rnote">'+msg+'</p></div>';
+  h+='<p class="rnote">決めた時刻にモンテくんが知らせてくれるよ。その日もう勉強していれば、通知は来ません。</p>'+
+     '<div class="seg" id="remSeg"><button class="b3d'+(R.on?' on':'')+'" data-v="1">🔔 ON</button><button class="b3d'+(R.on?'':' on')+'" data-v="0">🔕 OFF</button></div>';
+  if(R.on) h+='<label class="rtime">通知する時刻<select id="remTime">'+REMIND_TIMES.map(t=>'<option'+(t===R.time?' selected':'')+'>'+t+'</option>').join('')+'</select></label>';
+  return h+'</div>';
+}
+function b64uBytes(s){ const b=atob(s.replace(/-/g,'+').replace(/_/g,'/')); return Uint8Array.from(b,c=>c.charCodeAt(0)); }
+function swReady(){ return Promise.race([navigator.serviceWorker.ready, new Promise((_,no)=>setTimeout(()=>no(new Error('sw')),8000))]); }
+async function pushPost(path,body){
+  const r=await fetch(PUSH_CFG.url+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),keepalive:true});
+  if(!r.ok) throw new Error('push '+r.status);
+}
+async function remindOn(){
+  if(remindBusy||P.remind.on) return;
+  remindBusy=true;
+  try{
+    const perm=await Notification.requestPermission();   // ボタンを押した直後に呼ぶ必要がある
+    if(perm!=='granted'){ toast('通知が許可されませんでした'); return; }
+    const reg=await swReady();
+    const sub=await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:b64uBytes(PUSH_CFG.key)});
+    await pushPost('/subscribe',{endpoint:sub.endpoint,time:P.remind.time});
+    P.remind.on=true; P.remind.ping=null; P.remind.sync=ymd(); save();
+    remindMirror(); remindStudied();
+    toast('🔔 '+P.remind.time+'に知らせるね！');
+  }catch(e){ toast('通知をオンにできませんでした。電波のよい場所でもう一度ためしてね'); }
+  finally{ remindBusy=false; renderProfile(); }
+}
+async function remindOff(){
+  if(remindBusy||!P.remind.on) return;
+  remindBusy=true;
+  try{
+    const reg=await swReady(), sub=await reg.pushManager.getSubscription();
+    if(sub){ try{ await pushPost('/unsubscribe',{endpoint:sub.endpoint}); }catch(e){} await sub.unsubscribe(); }
+    toast('🔕 通知をオフにしました');
+  }catch(e){}
+  P.remind.on=false; save();
+  remindBusy=false; renderProfile();
+}
+async function remindSetTime(t){
+  if(remindBusy) return;
+  remindBusy=true;
+  const before=P.remind.time;
+  try{
+    const reg=await swReady(), sub=await reg.pushManager.getSubscription();
+    if(!sub) throw new Error('nosub');
+    await pushPost('/subscribe',{endpoint:sub.endpoint,time:t});
+    P.remind.time=t; save(); toast('🔔 '+t+'に変更しました');
+  }catch(e){ P.remind.time=before; toast('時刻を変更できませんでした'); }
+  remindBusy=false; renderProfile();
+}
+// 今日のレッスンを終えたら、今日の通知を止めてもらう
+async function remindStudied(){
+  const R=P.remind, td=ymd();
+  if(!R.on || P.lastDay!==td || R.ping===td || remindEnv()!=='ok') return;
+  try{
+    const sub=await (await swReady()).pushManager.getSubscription();
+    if(!sub) return;
+    await pushPost('/studied',{endpoint:sub.endpoint});
+    R.ping=td; save();
+  }catch(e){}
+}
+// 起動時に1日1回、宛先が変わっていないか・許可が取り消されていないかを合わせる
+async function remindSync(){
+  const R=P.remind;
+  if(!R.on || remindEnv()==='noconfig') return;
+  try{
+    if(!('Notification' in window) || Notification.permission!=='granted'){ R.on=false; save(); return; }
+    const sub=await (await swReady()).pushManager.getSubscription();
+    if(!sub){ R.on=false; save(); return; }
+    if(R.sync!==ymd()){ await pushPost('/subscribe',{endpoint:sub.endpoint,time:R.time}); R.sync=ymd(); save(); }
+    remindStudied();
+  }catch(e){}
+}
+// 通知の文面用に、おさらいの予定日をサービスワーカーへ渡す
+function remindMirror(){
+  if(!P.remind.on || !('caches' in window)) return;
+  try{
+    const dues=Object.values(P.srs).filter(v=>v.s<SRS_DAYS.length && v.due).map(v=>v.due);
+    caches.open('shakaringo-state').then(c=>c.put(new URL('__state',document.baseURI).href,new Response(JSON.stringify({dues})))).catch(()=>{});
+  }catch(e){}
 }
 
 /* ====== LESSON engine ====== */
@@ -1999,6 +2247,7 @@ function endLesson(cleared){
   const keyGain = (newCrown?KEY_CROWN:0) + (levelOf(P.xp)-levelOf(xpBefore))*KEY_LEVEL + got.length*KEY_QUEST;
   P.keys=(P.keys||0) + (newCrown?KEY_CROWN:0) + (levelOf(P.xp)-levelOf(xpBefore))*KEY_LEVEL;
   save(); renderStatus();
+  remindStudied(); rankSync();
   sfx(cleared?'done':'bad');
   const sc=$('#resultScreen');
   const head = !cleared ? 'ハートがなくなった…' : perfect ? 'ノーミスでクリア！' : acc>=80 ? 'レッスンクリア！' : 'おつかれさま！';
@@ -2097,7 +2346,7 @@ function renderInstall(){
 window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); installEvt=e; renderInstall(); });
 window.addEventListener('appinstalled',()=>{ installEvt=null; renderInstall(); toast('📲 アプリを追加したよ！'); });
 // 圏外でも動くようにするサービスワーカー（http/https で開いたときだけ）
-if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').then(remindSync).catch(()=>{});
 
 /* ====== init ====== */
 renderInstall();
