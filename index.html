@@ -338,6 +338,10 @@
   .seg button{background:var(--panel);color:var(--ink-soft);border-radius:var(--r-s);padding:7px 4px;font-weight:900;font-size:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center}
   .seg button small{font-size:11px;font-weight:700;opacity:.8}
   .rnote{font-size:12.5px;font-weight:700;color:var(--ink-soft);line-height:1.6;margin:2px 0 8px}
+  /* 記録の引き継ぎ */
+  .bkcode{margin:8px 0 2px;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:24px;font-weight:900;letter-spacing:.08em;color:var(--ink);background:var(--panel-2);border:1.5px dashed var(--gold);border-radius:var(--r-m);padding:8px 4px;user-select:all}
+  .bkat{text-align:center;font-size:11.5px;font-weight:700;color:var(--ink-faint)}
+  .bkrest{margin-top:10px;border-top:1px solid var(--line-soft);padding-top:8px}
   /* みんなのレベル */
   .rkform{display:flex;gap:8px;margin-top:6px}
   .rkform input{flex:1;min-width:0;font:inherit;font-size:16px;font-weight:700;color:var(--ink);background:var(--panel-2);border:1.5px solid var(--line-strong);border-radius:var(--r-s);padding:7px 10px}
@@ -751,7 +755,7 @@ let P={ xp:0, crowns:{}, best:{}, bestStreak:0, dayStreak:0, lastDay:null,
   maxDayStreak:0, days:[], goal:30, today:null, miss:{}, chests:{}, sound:true, totalLessons:0, perfects:0,
   keys:0, tickets:[], opened:0, remind:{on:false, time:'19:00', ping:null, sync:null}, player:{name:'', token:'', removed:false} };
 try{ const s=JSON.parse(localStorage.getItem('yougo_prog')||'{}'); P=Object.assign(P,s); }catch(e){}
-function save(){ try{ localStorage.setItem('yougo_prog', JSON.stringify(P)); }catch(e){} }
+function save(){ try{ localStorage.setItem('yougo_prog', JSON.stringify(P)); }catch(e){} backupSoon(); }
 function levelOf(xp){ return Math.floor(xp/100)+1; }
 function lvProgress(xp){ return (xp%100)/100; }
 // 端末の日付（YYYY-MM-DD）
@@ -1288,6 +1292,7 @@ function renderProfile(){
   h+='<div class="pcard"><div class="ph">実績バッジ</div><div class="bgrid">'+
      BADGES.map(b=>'<div class="badge'+(b.ok()?'':' off')+'"><i>'+b.ic+'</i><b>'+b.nm+'</b><small>'+b.how+'</small></div>').join('')+'</div></div>';
   h+=remindCard();
+  h+=backupCard();
   h+='<div class="pcard"><div class="ph">1日の目標</div><div class="seg" id="goalSeg">'+
      [[10,'ゆったり'],[20,'ふつう'],[30,'しっかり'],[50,'がっつり']].map(([v,n])=>'<button class="b3d'+(P.goal===v?' on':'')+'" data-v="'+v+'">'+n+'<small>'+v+' XP</small></button>').join('')+'</div>'+
      '<div class="ph" style="margin-top:16px">効果音</div><div class="seg" id="sndSeg">'+
@@ -1298,6 +1303,7 @@ function renderProfile(){
   host.querySelectorAll('#remSeg button').forEach(b=>b.onclick=()=>{ b.dataset.v==='1' ? remindOn() : remindOff(); });
   const rt=host.querySelector('#remTime'); if(rt) rt.onchange=()=>remindSetTime(rt.value);
   if(PUSH_CFG.url){ drawRank(); loadRank(); }
+  bindBackup(host);
 }
 
 /* ====== みんなのレベル（ランキング） ======
@@ -1408,6 +1414,91 @@ async function rankPinCheck(){
     toast(r.s===429?'今日はこれ以上ためせません':'番号がちがいます');
   }catch(e){ toast('つながりませんでした'); }
 }
+/* ====== 記録の引き継ぎ ======
+   記録が変わるたびに（数秒まとめて）サーバーへ控えを送る。引き継ぎコードを入れると、その控えで記録を置きかえる。
+   save() は読みこみの途中でも呼ばれるので、ここで使う変数は var にして、設定がまだのときは何もしない */
+var bkTimer=null, bkLast='', bkMsg='', bkOpen=false;
+const BK_ALPHA='0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+function bkRand(n){ return [...crypto.getRandomValues(new Uint8Array(n))].map(x=>BK_ALPHA[x&31]).join(''); }
+function bkFmt(c){ return c.slice(0,4)+'-'+c.slice(4,8)+'-'+c.slice(8); }
+function bkNorm(s){ return String(s||'').normalize('NFKC').toUpperCase().replace(/[\s\-ー]/g,'').replace(/O/g,'0').replace(/[IL]/g,'1'); }
+// コードは一度作ったら端末に残す（電波がなくても、開くたびにコードが変わらないように）
+function bkInit(){
+  let made=false;
+  if(!P.backup || typeof P.backup!=='object'){ P.backup={}; made=true; }
+  if(!P.backup.dev){ P.backup.dev=bkRand(22); made=true; }
+  if(!P.backup.code && !P.backup.moved){ P.backup.code=bkRand(12); made=true; }
+  if(made){ try{ localStorage.setItem('yougo_prog', JSON.stringify(P)); }catch(e){} }
+}
+function bkSnapshot(){ const o=Object.assign({},P); delete o.backup; delete o.remind; return JSON.stringify(o); }
+function backupSoon(){
+  try{ if(!PUSH_CFG.url) return; }catch(e){ return; }
+  clearTimeout(bkTimer); bkTimer=setTimeout(backupNow,3000);
+}
+async function backupNow(){
+  bkInit();
+  const B=P.backup; if(!B.code || B.moved) return;
+  const snap=bkSnapshot(); if(snap===bkLast) return;
+  try{
+    const r=await fetch(PUSH_CFG.url+'/backup/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:B.code,dev:B.dev,data:snap}),keepalive:snap.length<60000});
+    if(r.status===200){ bkLast=snap; B.at=Date.now(); }
+    else if(r.status===409){ B.moved=true; }
+    try{ localStorage.setItem('yougo_prog', JSON.stringify(P)); }catch(e){}
+    // 記録画面を開いていれば表示を合わせる（入力中のときは書きかえない）
+    const c=document.querySelector('#bkCard');
+    if(c && !$('#profileScreen').classList.contains('hidden')){
+      const typing=document.activeElement && document.activeElement.tagName==='INPUT';
+      if(B.moved && !typing) renderProfile();
+      else{ const at=c.querySelector('.bkat'); if(at && B.at){ const d=new Date(B.at); at.textContent='最後に保存：'+(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); } }
+    }
+  }catch(e){}
+}
+function backupCard(){
+  try{ if(!PUSH_CFG.url) return ''; }catch(e){ return ''; }
+  bkInit();
+  const B=P.backup, d=B.at?new Date(B.at):null;
+  let h='<div class="pcard" id="bkCard"><div class="ph">記録の引き継ぎ</div>';
+  if(B.moved){
+    h+='<p class="rkwarn">この端末の引き継ぎコードは、別の端末で使われました。この端末の記録は、もう保存されていません。</p>'+
+       '<button class="b3d rkbtn" id="bkNew">この端末用に新しいコードを作る</button>';
+  }else{
+    h+='<p class="rnote">記録が消えたときや機種を変えたときに、このコードで元に戻せるよ。<b>写真やメモで残しておこう</b>。ほかの人には教えないでね。</p>'+
+       '<div class="bkcode">'+bkFmt(B.code)+'</div>'+
+       '<div class="bkat">'+(d?'最後に保存：'+(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'):'まだ保存されていません（電波のあるところで開いてね）')+'</div>';
+  }
+  h+= bkOpen
+    ? '<div class="bkrest"><p class="rnote">引き継ぎコードを入れると、<b>この端末の今の記録は、そのコードの記録に置きかわります</b>。</p>'+
+      '<div class="rkform"><input id="bkIn" placeholder="XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" maxlength="16"><button class="b3d rkbtn" id="bkGo">戻す</button></div>'+
+      (bkMsg?'<p class="rkwarn">'+rkEsc(bkMsg)+'</p>':'')+'</div>'
+    : '<button class="rklink rkt" id="bkShow">引き継ぎコードで記録を戻す</button>';
+  return h+'</div>';
+}
+function bindBackup(host){
+  const on=(s,f)=>{ const e=host.querySelector(s); if(e) e.onclick=f; };
+  on('#bkShow',()=>{ bkOpen=true; bkMsg=''; renderProfile(); });
+  on('#bkGo',bkRestore);
+  on('#bkNew',()=>{ P.backup={dev:P.backup.dev}; bkLast=''; bkInit(); save(); renderProfile(); });
+}
+async function bkRestore(){
+  const el=$('#bkIn'); const code=bkNorm(el&&el.value);
+  if(!/^[0-9A-HJKMNP-TV-Z]{12}$/.test(code)){ bkMsg='コードは12文字です（ハイフンはなくてもOK）'; return renderProfile(); }
+  if(code===P.backup.code){ bkMsg='これはこの端末のコードです'; return renderProfile(); }
+  if(!confirm('この端末の今の記録は、引き継ぎコードの記録に置きかわります。よろしいですか？')) return;
+  try{
+    const r=await fetch(PUSH_CFG.url+'/backup/load',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,dev:P.backup.dev})});
+    if(r.status===404){ bkMsg='そのコードの記録は見つかりませんでした'; return renderProfile(); }
+    if(r.status===429){ bkMsg='今日はこれ以上ためせません。明日もう一度ためしてね'; return renderProfile(); }
+    if(r.status!==200) throw new Error('load');
+    const data=JSON.parse((await r.json()).data);
+    if(!data || typeof data!=='object') throw new Error('data');
+    // 通知の設定はこの端末のものを残し、引き継ぎコードは受け取ったものに切りかえる
+    data.remind=P.remind; data.backup={code, dev:P.backup.dev, at:Date.now()};
+    clearTimeout(bkTimer);
+    localStorage.setItem('yougo_prog', JSON.stringify(data));
+    location.reload();
+  }catch(e){ bkMsg='つながりませんでした。電波のよい場所でもう一度ためしてね'; renderProfile(); }
+}
+
 async function rankRemove(id,name){
   if(!confirm('「'+name+'」の名前をランキングから消しますか？')) return;
   try{
@@ -2347,6 +2438,8 @@ window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); installEv
 window.addEventListener('appinstalled',()=>{ installEvt=null; renderInstall(); toast('📲 アプリを追加したよ！'); });
 // 圏外でも動くようにするサービスワーカー（http/https で開いたときだけ）
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').then(remindSync).catch(()=>{});
+// 起動したら引き継ぎコードを用意して、控えを送っておく
+try{ if(PUSH_CFG.url){ bkInit(); backupSoon(); } }catch(e){}
 
 /* ====== init ====== */
 renderInstall();

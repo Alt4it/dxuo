@@ -3,7 +3,7 @@
    - アイコンなどは保存した版を優先
    - Google Fonts は使うたびに保存しておき、圏外でも同じフォントで表示する
    アプリを更新したら VERSION を上げる */
-const VERSION = 'yougo-v17';
+const VERSION = 'yougo-v18';
 const STATE = 'shakaringo-state';   // 通知の文面に使う、おさらいの予定日（アプリが書く）
 const CORE = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png',
